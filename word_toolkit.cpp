@@ -1,4 +1,5 @@
 #include "word_toolkit.hpp"
+#include <algorithm>
 
 // Cost temporal: O(n), n = s.size()
 bool word_toolkit::es_canonic(const string& s) throw() {
@@ -24,23 +25,22 @@ string word_toolkit::anagrama_canonic(const string& s) throw() {
 char word_toolkit::mes_frequent(const string& excl, const list<string>& L) throw() {
     //cost constant  O(1)
     bool excl_array[26] = {false};
-    for (int i = 0; i < excl.size(); ++i) {
+    for (unsigned int i = 0; i < excl.size(); ++i) {
         excl_array[i-'A'] = true; 
     }
 
     int freq_excl_array[26] = {0};
-    iterador it = L.begin();
+    list<string>::const_iterator it = L.begin();
     while (it != L.end()) {
         string paraula = *it;
-        for (int i = 0; i < paraula.size(); ++i) {
-            char lletra = paraula[i];
+        for (unsigned int i = 0; i < paraula.size(); ++i) {
             if (not excl_array[i-'A']) freq_excl_array[i-'A']++;
         }
     }
 
     int max_freq = 0;
     char c = '\0';
-    for (int i = 0; i < freq_excl_array.size(); ++i) {
+    for (unsigned int i = 0; i < 26; ++i) {
         if (max_freq < freq_excl_array[i]) {
             max_freq = freq_excl_array[i];
             c = i + 'A';
