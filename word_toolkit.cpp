@@ -44,7 +44,7 @@ char word_toolkit::mes_frequent(const string& excl, const list<string>& L) throw
         if (max_freq < freq_excl_array[i]) {
             max_freq = freq_excl_array[i];
             c = i + 'A';
-        } else if (max_freq == freq_excl_array[i]) {
+        } else if (max_freq == freq_excl_array[i] and c != '\0') {
             char d = i + 'A';
             if (d < c) c = d;
         }
