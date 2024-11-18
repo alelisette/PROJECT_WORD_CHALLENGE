@@ -5,7 +5,7 @@
 #include <vector>
 
 using namespace std;
-using util::nat;
+using util::nat;  //typedef unsigned int (igual)
 
 typedef vector<nat> subset;
 

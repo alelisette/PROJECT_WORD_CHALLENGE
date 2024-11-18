@@ -1,4 +1,4 @@
-#ifndef _WORD_TOOLKIT_HPP
+#ifndef _WORD_TOOLKIT_HPP   //directriva si no esta definida el WORD_TOOLKIT_HPP
 #define _WORD_TOOLKIT_HPP
 #include <string>
 #include <list>
