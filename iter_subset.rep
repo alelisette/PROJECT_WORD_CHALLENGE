@@ -5,4 +5,3 @@ struct node {
 
 node* _prim;
 node* _ult;
-nat _mida;
