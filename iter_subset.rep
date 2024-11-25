@@ -1,0 +1,8 @@
+struct node {
+    subset info;
+    node* seg;
+};
+
+node* _prim;
+node* _ult;
+nat _mida;
