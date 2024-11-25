@@ -3,8 +3,9 @@
 iter_subset::iter_subset(nat n, nat k) throw(error) {
    if (n < k) throw runtime_error("Error: n < k");
 
-   subset info(k, 0);
-   for (nat i = 0; i < k; ++i) info[i] = i+1;
+   // subset info(k, 0);
+   vector<nat> info;
+   for (nat i = 0; i < k; ++i) info.push_back(i+1);
 
    _prim = new node;
    _prim->info = info;
