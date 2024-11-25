@@ -1,25 +1,5 @@
 #include "iter_subset.hpp"
 
-<<<<<<< HEAD
-iter_subset::iter_subset(nat n, nat k) throw(error) {
-    if (n < k) throw runtime_error("Error: n < k");
-
-    int nombreCombinatori;
-    _mida = (nat)nombreCombinatori;
-
-    node* anterior = nullptr;
-    for (int i = 0; i < nombreCombinatori; ++i) {
-        node* nouNode = new node;
-        nouNode->info;
-        nouNode->seg = nullptr;
-
-        if (i == 0) _prim = nouNode;
-        else anterior->seg = nouNode;
-        anterior = nouNode;
-    }
-    _ult = anterior;
-}
-=======
   /* Pre:  Cert
      Post: Construeix un iterador sobre els subconjunts de k elements 
      de {1, ..., n}; si k > n no hi ha res a recórrer. */
@@ -78,4 +58,3 @@ iter_subset::iter_subset(nat n, nat k) throw(error) {
   bool iter_subset::operator!=(const iter_subset& c) const throw() {
 
   }
->>>>>>> acb4509 (implementacio iter_subset.cpp)
