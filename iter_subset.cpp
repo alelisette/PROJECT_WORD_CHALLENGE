@@ -15,9 +15,18 @@ iter_subset::iter_subset(nat n, nat k) throw(error) {
 
 /* Tres grans. Constructor per còpia, operador d'assignació i destructor. */
 iter_subset::iter_subset(const iter_subset& its) throw(error) {
-   
+   node* p = its._prim;
+   while (p != nullptr) {
+      node* actual = new node;
+      actual->info = p->info;
+      actual->seg = p->seg;
+
+      if (p == its._prim) _prim = actual;
+      if (p == its._ult) _ult = actual;
+      p = p->seg;
+   }
 }
-iter_subset& iter_subset::operator=(const iter_subset& its) throw(error){
+iter_subset &iter_subset::operator=(const iter_subset& its) throw(error){
 
 }
 iter_subset::~iter_subset() throw() {
