@@ -23,7 +23,6 @@ string word_toolkit::anagrama_canonic(const string& s) throw() {
 
 // Cost temporal: O(n^2), n = L.size()
 char word_toolkit::mes_frequent(const string& excl, const list<string>& L) throw() {
-    //cost constant  O(1)
     bool excl_array[26] = {false};
     for (unsigned int i = 0; i < excl.size(); ++i) {
         excl_array[i-'A'] = true; 
