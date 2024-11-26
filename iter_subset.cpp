@@ -3,14 +3,11 @@
 iter_subset::iter_subset(nat n, nat k) throw(error) {
    if (n < k) throw runtime_error("Error: n < k");
 
-   // subset info(k, 0);
+   _n = n;
+   _k = k;
+   
    vector<nat> info;
    for (nat i = 0; i < k; ++i) info.push_back(i+1);
-
-   _prim = new node;
-   _prim->info = info;
-   _prim->seg = nullptr;
-   _ult = _prim;
 }
 
 /* Tres grans. Constructor per còpia, operador d'assignació i destructor. */
