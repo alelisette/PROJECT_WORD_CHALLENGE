@@ -25,7 +25,7 @@ string word_toolkit::anagrama_canonic(const string& s) throw() {
 char word_toolkit::mes_frequent(const string& excl, const list<string>& L) throw() {
     bool excl_array[26] = {false};
     for (unsigned int i = 0; i < excl.size(); ++i) {
-        excl_array[i-'A'] = true; 
+        excl_array[excl[i]-'A'] = true; 
     }
 
     int freq_excl_array[26] = {0};
@@ -33,8 +33,11 @@ char word_toolkit::mes_frequent(const string& excl, const list<string>& L) throw
     while (it != L.end()) {
         string paraula = *it;
         for (unsigned int i = 0; i < paraula.size(); ++i) {
-            if (not excl_array[i-'A']) freq_excl_array[i-'A']++;
+            unsigned int index_char = paraula[i]-'A';
+            if (not excl_array[index_char]) ++freq_excl_array[index_char];
         }
+
+        ++it;
     }
 
     int max_freq = 0;
