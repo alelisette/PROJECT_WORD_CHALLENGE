@@ -57,6 +57,11 @@
   "C_Cpp_Runner.useLinkTimeOptimization": false,
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
   "files.associations": {
-    "*.rep": "cpp"
+    "*.rep": "cpp",
+    "util": "cpp",
+    "error": "cpp",
+    "*.tcc": "cpp",
+    "compare": "cpp",
+    "type_traits": "cpp"
   }
 }
