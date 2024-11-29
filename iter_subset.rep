@@ -1,3 +1,4 @@
 nat _n;
 nat _k;
 subset _ss;
+bool _end;
