@@ -1,0 +1,10 @@
+# VSCode-specific files
+.vscode/
+*.code-workspace
+
+# Compiled object files, binaries, or libraries
+*.o
+*.obj
+*.so
+*.dll
+*.exe
