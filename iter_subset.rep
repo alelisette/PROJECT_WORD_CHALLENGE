@@ -1,4 +1,30 @@
+/* Natural que representa el nombre total d'elements del conjunt {1, ..., n}. 
+    Atribut necessari per determinar la generació i finalització dels subconjunts. 
+    Quan _n = 0 i _n < _k, directament iter_subset "apunta" al sentinella. */
 nat _n;
+
+/* Natural que representa la mida dels subconjunts. És essencial per saber quants 
+    elements ha de tenir cada subset i per garantir que els iteradors segueixin 
+    les restriccions del problema. 
+    Dos iter_subsets amb _k = 0 seran sempre iguals independentment de _n, mentre 
+    que si 0 < _k ambdós iter_subsets han de tenir la mateixa _n per ser iguals. */
 nat _k;
+
+/* Atribut que emmagatzema el subset actual on els elements sempre estan en ordre.
+    Emmagatzema l'últim subset en cas de que s'hagi arribat al final i és un subset 
+    buit en cas de que _k = 0 */
 subset _ss;
+
+/* Booleà que indica si l'iterador ha arribat al final del recorregut (no queden més
+    subconjunts). Determinar quan l'iterador ha acabat el "recorregut" (no recorre
+    res sino que va canviant els elements de _ss) i optimitzar l'execució 
+    evitant operacions innecessàries.
+    Quan _k = 0 -> iter_subset "apunta" a un subconjunt buit i _end = false */
 bool _end;
+
+/* Justificació de la representació:
+   S'ha triat aquesta estructura per minimitzar l'ús de memòria i garantir eficiència. 
+   No es guarda una llista completa de tots els subconjunts, sinó que es treballa amb 
+   un únic subset a la vegada (_ss) i es modifica per generar el següent subset en ordre 
+   lexicogràfic. Aquesta estratègia evita duplicació de dades i és adequada per a un 
+   iterador que va només cap endavant. */
