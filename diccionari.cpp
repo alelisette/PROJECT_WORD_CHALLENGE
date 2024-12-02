@@ -21,7 +21,7 @@ void diccionari::insereix(const string& p) throw(error) {
 }
 
 string diccionari::prefix(const string& p) const throw(error) {
-
+    return "Hola";
 }
 
 void diccionari::satisfan_patro(const vector<string>& q, list<string>& L) const throw(error) {
