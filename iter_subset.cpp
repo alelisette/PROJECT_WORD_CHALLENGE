@@ -13,12 +13,6 @@ iter_subset::iter_subset(nat n, nat k) throw(error) {
 
 /* Cost: O(k) */
 iter_subset::iter_subset(const iter_subset& its) throw(error) {
-   /*if (its._n < its._k) {
-      _end = true;
-      error err(31, "iter_subset", "Acces amb iterador de subconjunts invalid.");
-      throw err;
-   }*/
-
    _n = its._n;
    _k = its._k;
    _ss = subset(_k, 0);
@@ -28,12 +22,6 @@ iter_subset::iter_subset(const iter_subset& its) throw(error) {
 
 /* Cost: O(k) */
 iter_subset &iter_subset::operator=(const iter_subset& its) throw(error){
-   /*if (its._n < its._k) {
-      _end = true;
-      error err(31, "iter_subset", "Acces amb iterador de subconjunts invalid.");
-      throw err;
-   }*/
-
    if (this != &its) {
       iter_subset aux(its);
       
@@ -59,7 +47,7 @@ bool iter_subset::end() const throw() {
 /* Cost: O(k) */
 subset iter_subset::operator*() const throw(error) {
    if (_end) {
-      error err(31, "iter_subset", "Acces amb iterador de subconjunts invalid.");
+      error err(IterSubsetIncorr);
       throw err;
    }
 
