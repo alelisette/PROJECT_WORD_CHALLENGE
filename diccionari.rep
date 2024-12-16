@@ -1,0 +1,13 @@
+struct node {
+    char _lletra;
+    node* _esq;
+    node* _cen;
+    node* _dre;
+    
+    node(const char &lletra, node* esq = NULL, node* cen = NULL, node* dre = NULL);
+};
+
+node* _arrel;
+
+string prefix_aux(node* arrel, const string& p, nat index) const throw(error);
+node* insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error);
