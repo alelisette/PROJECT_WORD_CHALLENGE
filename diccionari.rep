@@ -3,8 +3,6 @@ struct node {
     node* _esq;
     node* _cen;
     node* _dre;
-    
-    node(const char &lletra, node* esq = nullptr, node* cen = nullptr, node* dre = nullptr);
 };
 
 node* _arrel;

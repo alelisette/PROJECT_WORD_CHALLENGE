@@ -1,10 +1,6 @@
 #include "diccionari.hpp"
 #include "word_toolkit.hpp"
 
-diccionari::node::node(const char &lletra, node* esq, node* cen, node* dre) :
-    _lletra(lletra), _esq(esq), _cen(cen), _dre(dre) {
-}
-
 diccionari::diccionari() throw(error) {
     _arrel = nullptr;
     _numPal = 0;
@@ -45,7 +41,7 @@ diccionari::~diccionari() throw() {
 void diccionari::esborra(node* arrel) {
     if (arrel != nullptr) {
         esborra(arrel->_cen);
-        esborrra(arrel->_esq);
+        esborra(arrel->_esq);
         esborra(arrel->_dre);
         delete arrel;
     }
@@ -58,7 +54,11 @@ void diccionari::insereix(const string& p) throw(error) {
 diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error) {
     if (index < paraulaNova.size()) {
         if (arrel == nullptr) {
-            arrel = new node(paraulaNova[index], nullptr, nullptr, nullptr);
+            arrel = new node;
+            arrel->_lletra = paraulaNova[index];
+            arrel->_cen = nullptr;
+            arrel->_esq = nullptr;
+            arrel->_dre = nullptr;
 
             if (index < paraulaNova.size()-1) arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
             else ++_numPal; // Hem acabat d'inserir la paraula nova
