@@ -91,14 +91,68 @@ string diccionari::prefix_aux(node* arrel, const string& p, nat index) const thr
 
     return prefix;
 }
+//EL COST DOMINANT SERA:
+//O(n⋅klogk): Si el patrón tiene muchos subpatrones largos.
+//O(m⋅log⁡k)O(m⋅logk): Si el árbol TST es grande y el patrón es corto.
 
+//Cost: O(n⋅klogk+m⋅logk) on n: Longitud del patrón (número de posiciones), k: Longitud promedio de los subpatrones, m: Número de nodos en el TST
 void diccionari::satisfan_patro(const vector<string>& q, list<string>& L) const throw(error) {
+ 
+    // Crear una copia de `q` donde cada subpatrón estará ordenado
+    vector<string> subpatro(q.size());
+    for (unsigned int i = 0; i < q.size(); ++i) {
+        subpatro[i] = word_toolkit::anagrama_canonic(q[i]); // Ordenar cada subpatrón con anagrama_canonic
+    }
 
+    string pactual; // Cadena temporal para construir palabras
+    satisfan_patro_aux(_arrel, subpatro, 0, pactual, L); // Llamada auxiliar recursivo
 }
 
-void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& q, list<string>& L) const throw(error) {
+//Cost: O(m⋅logk)
+void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& q, nat pos, string& actual, list<string>& L) const throw(error) {
+    if (arrel == nullptr) return; // Caso base: nodo vacío
 
+    // Recorrer el subárbol izquierdo
+    satisfan_patro_aux(arrel->_esq, q, pos, actual, L);
+
+    // Si estamos dentro de los límites del patrón
+    if (pos < q.size()) {
+        const string& subpatron = q[pos]; // Subpatrón correspondiente
+        if (conte_lletra(subpatron, arrel->_lletra, 0, subpatron.size() - 1)) {
+            actual += arrel->_lletra; // Añadir la letra a la palabra actual
+
+            // Llamada recursiva al hijo central para la siguiente posición del patrón
+            satisfan_patro_aux(arrel->_cen, q, pos + 1, actual, L);
+
+            actual.pop_back(); // Retroceder: eliminar la última letra
+        }
+    } else {
+        // Si hemos llegado al final del patrón, comprobar si estamos en el final de una palabra
+        if (arrel->_lletra == '#') {
+            L.push_back(actual); // Añadir la palabra completa a la lista de resultados
+        }
+    }
+
+    // Recorrer el subárbol derecho
+    satisfan_patro_aux(arrel->_dre, q, pos, actual, L);
 }
+
+//Cost: O(logk)
+// Función auxiliar: Divide y vencerás para buscar una letra en un subpatrón ordenado
+bool diccionari::conte_lletra(const string& subpatron, char letra, int inicio, int fin)  const {
+    if (inicio > fin) return false; // Caso base: la letra no está en el rango
+
+    int mig = (inicio + fin) / 2;
+
+    if (subpatron[mig] == letra) {
+        return true; // La letra coincide con el punto medio
+    } else if (letra < subpatron[mig]) {
+        return conte_lletra(subpatron, letra, inicio, mig - 1); // Buscar en la mitad izquierda
+    } else {
+        return conte_lletra(subpatron, letra, mig + 1, fin); // Buscar en la mitad derecha
+    }
+}
+
 
 void diccionari::llista_paraules(nat k, list<string>& L) const throw(error) {
     llista_paraules_aux(_arrel, k, L, 0, "");
