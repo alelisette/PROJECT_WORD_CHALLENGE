@@ -52,8 +52,7 @@ void diccionari::esborra(node* arrel) {
 }
 
 void diccionari::insereix(const string& p) throw(error) {
-    string paraulaNova = p + "#";
-    _arrel = insereix_aux(_arrel, paraulaNova, 0);
+    _arrel = insereix_aux(_arrel, p+'#', 0);
 }
 
 diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error) {
@@ -62,7 +61,7 @@ diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNov
             arrel = new node(paraulaNova[index], nullptr, nullptr, nullptr);
 
             if (index < paraulaNova.size()-1) arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
-            else ++_numPal; // Final de paraula
+            else ++_numPal; // Hem acabat d'inserir la paraula nova
         }
         else if (paraulaNova[index] < arrel->_lletra) arrel->_esq = insereix_aux(arrel->_esq, paraulaNova, index);
         else if (arrel->_lletra < paraulaNova[index]) arrel->_dre = insereix_aux(arrel->_dre, paraulaNova, index);
