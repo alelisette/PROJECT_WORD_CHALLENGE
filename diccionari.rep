@@ -13,3 +13,5 @@ nat _numPal;
 string prefix_aux(node* arrel, const string& p, nat index) const throw(error);
 node* insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error);
 void satisfan_patro_aux(node* arrel, const vector<string>& q, list<string>& L) const throw(error);
+node* copia(node* arrel);
+void esborra(node* arrel);

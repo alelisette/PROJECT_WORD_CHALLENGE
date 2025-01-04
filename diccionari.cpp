@@ -11,15 +11,44 @@ diccionari::diccionari() throw(error) {
 }
 
 diccionari::diccionari(const diccionari& D) throw(error) {
-
+    _arrel = copia(D._arrel);
 }   
 
 diccionari& diccionari::operator=(const diccionari& D) throw(error) {
+    if (this != &D) {
+        node* aux = copia(D._arrel);
+        esborra(_arrel);
+        _arrel = aux;
+    }
+
     return *this;
 }
 
-diccionari::~diccionari() throw() {
+diccionari::node* diccionari::copia(node* arrel) {
+    node* novaArrel = nullptr;
+    
+    if (arrel != nullptr) {
+        novaArrel = new node;
+        novaArrel->_lletra = arrel->_lletra;
+        novaArrel->_cen = copia(arrel->_cen);
+        novaArrel->_esq = copia(arrel->_esq);
+        novaArrel->_dre = copia(arrel->_dre);
+    }
 
+    return novaArrel;
+}
+
+diccionari::~diccionari() throw() {
+    esborra(_arrel);
+}
+
+void diccionari::esborra(node* arrel) {
+    if (arrel != nullptr) {
+        esborra(arrel->_cen);
+        esborrra(arrel->_esq);
+        esborra(arrel->_dre);
+        delete arrel;
+    }
 }
 
 void diccionari::insereix(const string& p) throw(error) {
