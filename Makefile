@@ -2,11 +2,11 @@
 # DEBUG_OPCIONS_WITHOUT_ERROR = -ansi -D_JUDGE_ -O2 -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -std=c++11
 # DEBUG_OPCIONS_WITHOUT_ERROR = -D_JUDGE_ -O2 -Wall -Wextra -std=c++11
 # RELEASE_OPCIONS = -ansi -D_JUDGE_ -O2 -Wall -Wextra -Werror -std=c++17
-OPCIONS = -std=c++20 -g -O0 -ansi -Wall -Werror
+OPCIONS = -std=c++14 -g -O0 -Wall -Wno-deprecated -Werror
+# OPCIONS = -std=c++11 -c -Wall -Werror
 
 driver_joc_par.e: driver_joc_par.o obte_paraules.o anagrames.o word_toolkit.o diccionari.o iter_subset.o
 	g++ -o driver_joc_par.e driver_joc_par.o obte_paraules.o anagrames.o word_toolkit.o diccionari.o iter_subset.o -lesin
-	rm *.o 
 
 driver_joc_par.o: driver_joc_par.cpp obte_paraules.hpp anagrames.hpp iter_subset.hpp diccionari.hpp word_toolkit.hpp
 	g++ -c driver_joc_par.cpp $(OPCIONS)
