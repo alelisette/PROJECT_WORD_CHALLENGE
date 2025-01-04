@@ -101,7 +101,18 @@ void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& q, list<s
 }
 
 void diccionari::llista_paraules(nat k, list<string>& L) const throw(error) {
+    llista_paraules_aux(_arrel, k, L, 0, "");
+}
 
+void diccionari::llista_paraules_aux(node* arrel, nat k, list<string>& L, nat nivell, string paraula) const throw(error) {
+    if (arrel != nullptr) {
+        llista_paraules_aux(_arrel->_esq, k, L, nivell, paraula);
+
+        if (arrel->_lletra != '#') llista_paraules_aux(_arrel->_cen, k, L, nivell+1, paraula+arrel->_lletra);
+        else if (k <= nivell) L.push_back(paraula);
+        
+        llista_paraules_aux(_arrel->_dre, k, L, nivell, paraula);
+    }
 }
 
 nat diccionari::num_pal() const throw() {
