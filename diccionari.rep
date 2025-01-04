@@ -4,10 +4,12 @@ struct node {
     node* _cen;
     node* _dre;
     
-    node(const char &lletra, node* esq = NULL, node* cen = NULL, node* dre = NULL);
+    node(const char &lletra, node* esq = nullptr, node* cen = nullptr, node* dre = nullptr);
 };
 
 node* _arrel;
+nat _numPal;
 
 string prefix_aux(node* arrel, const string& p, nat index) const throw(error);
 node* insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error);
+void satisfan_patro_aux(node* arrel, const vector<string>& q, list<string>& L) const throw(error);

@@ -1,4 +1,5 @@
 #include "diccionari.hpp"
+#include "word_toolkit.hpp"
 
 diccionari::node::node(const char &lletra, node* esq, node* cen, node* dre) :
     _lletra(lletra), _esq(esq), _cen(cen), _dre(dre) {
@@ -6,6 +7,7 @@ diccionari::node::node(const char &lletra, node* esq, node* cen, node* dre) :
 
 diccionari::diccionari() throw(error) {
     _arrel = nullptr;
+    _numPal = 0;
 }
 
 diccionari::diccionari(const diccionari& D) throw(error) {
@@ -27,9 +29,11 @@ void diccionari::insereix(const string& p) throw(error) {
 
 diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error) {
     if (index < paraulaNova.size()) {
-        if (arrel == NULL) {
-            arrel = new node(paraulaNova[index], NULL, NULL, NULL);
+        if (arrel == nullptr) {
+            arrel = new node(paraulaNova[index], nullptr, nullptr, nullptr);
+
             if (index < paraulaNova.size()-1) arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
+            else ++_numPal; // Final de paraula
         }
         else if (paraulaNova[index] < arrel->_lletra) arrel->_esq = insereix_aux(arrel->_esq, paraulaNova, index);
         else if (arrel->_lletra < paraulaNova[index]) arrel->_dre = insereix_aux(arrel->_dre, paraulaNova, index);
@@ -61,7 +65,11 @@ string diccionari::prefix_aux(node* arrel, const string& p, nat index) const thr
 }
 
 void diccionari::satisfan_patro(const vector<string>& q, list<string>& L) const throw(error) {
-    
+
+}
+
+void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& q, list<string>& L) const throw(error) {
+
 }
 
 void diccionari::llista_paraules(nat k, list<string>& L) const throw(error) {
@@ -69,5 +77,5 @@ void diccionari::llista_paraules(nat k, list<string>& L) const throw(error) {
 }
 
 nat diccionari::num_pal() const throw() {
-    return 0;
+    return _numPal;
 }
