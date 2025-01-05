@@ -50,48 +50,57 @@ void diccionari::esborra(node* arrel) {
 }
 
 void diccionari::insereix(const string& p) throw(error) {
-    _arrel = insereix_aux(_arrel, p+'#', 0);
+    if (p != "") _arrel = insereix_aux(_arrel, p+'#', 0);
 }
 
 diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error) {
-    if (index < paraulaNova.size()) {
-        if (arrel == nullptr) {
-            arrel = new node;
-            arrel->_lletra = paraulaNova[index];
-            arrel->_cen = nullptr;
-            arrel->_esq = nullptr;
-            arrel->_dre = nullptr;
+    if (arrel == nullptr) {
+        arrel = new node;
+        arrel->_lletra = paraulaNova[index];
+        arrel->_cen = nullptr;
+        arrel->_esq = nullptr;
+        arrel->_dre = nullptr;
 
-            if (index < paraulaNova.size()-1) arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
-            else ++_numPal; // Hem acabat d'inserir la paraula nova
-        }
-        else if (paraulaNova[index] < arrel->_lletra) arrel->_esq = insereix_aux(arrel->_esq, paraulaNova, index);
-        else if (arrel->_lletra < paraulaNova[index]) arrel->_dre = insereix_aux(arrel->_dre, paraulaNova, index);
-        else arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
+        if (index < paraulaNova.size()-1) arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
+        else ++_numPal; // Hem acabat d'inserir la paraula nova
     }
+    else if (paraulaNova[index] < arrel->_lletra) arrel->_esq = insereix_aux(arrel->_esq, paraulaNova, index);
+    else if (arrel->_lletra < paraulaNova[index]) arrel->_dre = insereix_aux(arrel->_dre, paraulaNova, index);
+    else arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
 
     return arrel;
 }
 
 string diccionari::prefix(const string& p) const throw(error) {
-    string prefix = "";
-    if (0 < p.size()) prefix = prefix_aux(_arrel, p+'#', 0);
-    return prefix;
+    string paraula = "";
+    if (p != "") paraula = prefix_aux(_arrel, p+'#', 0);
+    if (paraula != "") paraula.pop_back(); // Traiem el símbol # si cal
+    return paraula;
 }
 
 string diccionari::prefix_aux(node* arrel, const string& p, nat index) const throw(error) {
-    string prefix = "";
+    string paraula = "";
 
-    if (arrel != nullptr and p[index] != '#') {
+    if (arrel != nullptr) {
+        string sufix1 = "";
+        string sufix2 = "";
+        
+        node* actual = arrel; // Mirem si hi ha una paraula sencera a aquest nivell
+        while (actual->_esq != nullptr) actual = actual->_esq;
+        if (actual->_lletra == '#') sufix1 += actual->_lletra;
+
         if (arrel->_lletra == p[index]) {
-            prefix += arrel->_lletra;
-            if (index < p.size()-1) prefix += prefix_aux(arrel->_cen, p, index+1);  
+            sufix2 = arrel->_lletra;
+            if (index < p.size()) sufix2 += prefix_aux(arrel->_cen, p, index+1); 
         }
-        else if (p[index] < arrel->_lletra)  prefix = prefix_aux(arrel->_esq, p, index);
-        else prefix = prefix_aux(arrel->_dre, p, index);
+        else if (p[index] < arrel->_lletra) sufix2 = prefix_aux(arrel->_esq, p, index);
+        else sufix2 = prefix_aux(arrel->_dre, p, index);
+
+        paraula = sufix1;
+        if (sufix2 != "" and sufix2[sufix2.size()-1] == '#') paraula = sufix2;
     }
 
-    return prefix;
+    return paraula;
 }
 //EL COST DOMINANT SERA:
 //O(n⋅klogk): Si el patrón tiene muchos subpatrones largos.
