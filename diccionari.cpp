@@ -8,6 +8,7 @@ diccionari::diccionari() throw(error) {
 
 diccionari::diccionari(const diccionari& D) throw(error) {
     _arrel = copia(D._arrel);
+    _numPal = D._numPal;
 }   
 
 diccionari& diccionari::operator=(const diccionari& D) throw(error) {
@@ -15,6 +16,7 @@ diccionari& diccionari::operator=(const diccionari& D) throw(error) {
         node* aux = copia(D._arrel);
         esborra(_arrel);
         _arrel = aux;
+        _numPal = D._numPal;
     }
 
     return *this;
