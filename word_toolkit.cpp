@@ -1,7 +1,7 @@
 #include "word_toolkit.hpp"
 #include <algorithm>
 
-// Cost temporal: O(n), n = s.size()
+/* Cost temporal: O(n), n = s.size() */
 bool word_toolkit::es_canonic(const string& s) throw() {
     bool canonic = true;
     int i = 1;
@@ -14,14 +14,14 @@ bool word_toolkit::es_canonic(const string& s) throw() {
     return canonic;
 }
 
-// Cost temporal: O(n*log(n)), n = s.size()
+/* Cost temporal: O(n*log(n)), n = s.size() */
 string word_toolkit::anagrama_canonic(const string& s) throw() { 
     string canonic = s;
     sort(canonic.begin(), canonic.end());
     return canonic;
 }
 
-// Cost temporal: O(n^2), n = L.size()
+/* Cost temporal: O(n^2), n = L.size() */
 char word_toolkit::mes_frequent(const string& excl, const list<string>& L) throw() {
     bool excl_array[26] = {false};
     for (unsigned int i = 0; i < excl.size(); ++i) {

@@ -1,16 +1,20 @@
 #include "diccionari.hpp"
 #include "word_toolkit.hpp"
 
+/* Cost temporal: O(1) */
 diccionari::diccionari() throw(error) {
     _arrel = nullptr;
     _numPal = 0;
 }
 
+/* Cost temporal: O(n), on n és el nombre total de nodes del diccionari original. */
 diccionari::diccionari(const diccionari& D) throw(error) {
     _arrel = copia(D._arrel);
     _numPal = D._numPal;
 }   
 
+/* Cost temporal: O(n), on n és el nombre total de nodes del diccionari.
+   Això inclou copiar el diccionari `D` i alliberar els recursos del diccionari original. */
 diccionari& diccionari::operator=(const diccionari& D) throw(error) {
     if (this != &D) {
         node* aux = copia(D._arrel);
@@ -22,6 +26,7 @@ diccionari& diccionari::operator=(const diccionari& D) throw(error) {
     return *this;
 }
 
+/* Cost temporal: O(n), n = nombre de nodes al subarbre arrelat a arrel. */
 diccionari::node* diccionari::copia(node* arrel) {
     node* novaArrel = nullptr;
     
@@ -36,10 +41,13 @@ diccionari::node* diccionari::copia(node* arrel) {
     return novaArrel;
 }
 
+/* Cost temporal: O(n), on n és el nombre total de nodes del diccionari.
+   L'alliberament dels recursos recorre tots els nodes. */
 diccionari::~diccionari() throw() {
     esborra(_arrel);
 }
 
+/* Cost temporal: O(n), n = nombre de nodes al subarbre arrelat a arrel. */
 void diccionari::esborra(node* arrel) {
     if (arrel != nullptr) {
         esborra(arrel->_cen);
@@ -49,10 +57,15 @@ void diccionari::esborra(node* arrel) {
     }
 }
 
+/* Cost temporal: O(h), on h és l'alçada del TST.
+   En el cas mitjà d'un TST equilibrat, h = O(log(n)).
+   En el pitjor cas, h = O(n). */
 void diccionari::insereix(const string& p) throw(error) {
     if (p != "") _arrel = insereix_aux(_arrel, p+'#', 0);
 }
 
+/* Cost temporal: O(h), on h és l'alçada del subarbre arrelat a arrel. 
+   En un TST equilibrat, h = O(log(n)), on n és el nombre total de paraules al diccionari. */
 diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error) {
     if (arrel == nullptr) {
         arrel = new node;
@@ -71,6 +84,9 @@ diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNov
     return arrel;
 }
 
+/* Cost temporal: O(h), on h és l'alçada del TST.
+   En un TST equilibrat, h = O(log(n)), on n és el nombre de paraules al diccionari. 
+   En el pitjor cas, si el TST està completament desequilibrat, h = O(n). */
 string diccionari::prefix(const string& p) const throw(error) {
     string paraula = "";
     if (p != "") paraula = prefix_aux(_arrel, p+'#', 0);
@@ -78,6 +94,9 @@ string diccionari::prefix(const string& p) const throw(error) {
     return paraula;
 }
 
+/* Cost temporal: O(h), on h és l'alçada del subarbre arrelat a arrel. 
+   En el cas mitjà d'un TST equilibrat, h = O(log(n)), on n és el nombre de paraules.
+   En el pitjor cas, si el TST està completament desequilibrat, h = O(n). */
 string diccionari::prefix_aux(node* arrel, const string& p, nat index) const throw(error) {
     string paraula = "";
 
@@ -102,73 +121,68 @@ string diccionari::prefix_aux(node* arrel, const string& p, nat index) const thr
 
     return paraula;
 }
-//EL COST DOMINANT SERA:
-//O(n⋅klogk): Si el patrón tiene muchos subpatrones largos.
-//O(m⋅log⁡k)O(m⋅logk): Si el árbol TST es grande y el patrón es corto.
 
-//Cost: O(n⋅klogk+m⋅logk) on n: Longitud del patrón (número de posiciones), k: Longitud promedio de los subpatrones, m: Número de nodos en el TST
+/* Cost temporal: O(p + m * log(m)), on:
+   - p és el nombre de nodes explorats al TST.
+   - m és el nombre de paraules que satisfan el patró.
+   El cost mig depèn de la complexitat del patró i de l'esparsitat de les paraules dins del diccionari. */
 void diccionari::satisfan_patro(const vector<string>& q, list<string>& L) const throw(error) {
- 
-    // Crear una copia de `q` donde cada subpatrón estará ordenado
-    vector<string> subpatro(q.size());
-    for (unsigned int i = 0; i < q.size(); ++i) {
-        subpatro[i] = word_toolkit::anagrama_canonic(q[i]); // Ordenar cada subpatrón con anagrama_canonic
+    vector<string> patro(q.size());
+    for (nat i = 0; i < q.size(); ++i) {
+        patro[i] = word_toolkit::anagrama_canonic(q[i]); // Ordena lexicogràficament els elements de q
     }
 
-    string pactual; // Cadena temporal para construir palabras
-    satisfan_patro_aux(_arrel, subpatro, 0, pactual, L); // Llamada auxiliar recursivo
+    string actual = ""; // String temporal per construir paraules
+    satisfan_patro_aux(_arrel, patro, 0, actual, L); 
 }
 
-//Cost: O(m⋅logk)
-void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& q, nat pos, string& actual, list<string>& L) const throw(error) {
-    if (arrel == nullptr) return; // Caso base: nodo vacío
+/* Cost temporal: O(p + m * log(m)), on:
+   - p és el nombre de nodes al subarbre arrelat a arrel.
+   - m és el nombre total de paraules que satisfan el patró.
+   El cost mig depèn de l'esparsitat del patró dins del diccionari. */
+void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& patro, nat pos, string& actual, list<string>& L) const throw(error) {
+    if (arrel != nullptr) {
+        satisfan_patro_aux(arrel->_esq, patro, pos, actual, L);
 
-    // Recorrer el subárbol izquierdo
-    satisfan_patro_aux(arrel->_esq, q, pos, actual, L);
+        if (pos < patro.size()) {
+            string subpatro = patro[pos];
 
-    // Si estamos dentro de los límites del patrón
-    if (pos < q.size()) {
-        const string& subpatron = q[pos]; // Subpatrón correspondiente
-        if (conte_lletra(subpatron, arrel->_lletra, 0, subpatron.size() - 1)) {
-            actual += arrel->_lletra; // Añadir la letra a la palabra actual
-
-            // Llamada recursiva al hijo central para la siguiente posición del patrón
-            satisfan_patro_aux(arrel->_cen, q, pos + 1, actual, L);
-
-            actual.pop_back(); // Retroceder: eliminar la última letra
+            if (conte_lletra(subpatro, arrel->_lletra, 0, subpatro.size()-1)) {
+                actual += arrel->_lletra;
+                satisfan_patro_aux(arrel->_cen, patro, pos+1, actual, L);
+                actual.pop_back();
+            }
         }
-    } else {
-        // Si hemos llegado al final del patrón, comprobar si estamos en el final de una palabra
-        if (arrel->_lletra == '#') {
-            L.push_back(actual); // Añadir la palabra completa a la lista de resultados
-        }
-    }
+        else if (arrel->_lletra == '#') L.push_back(actual);
 
-    // Recorrer el subárbol derecho
-    satisfan_patro_aux(arrel->_dre, q, pos, actual, L);
-}
-
-//Cost: O(logk)
-// Función auxiliar: Divide y vencerás para buscar una letra en un subpatrón ordenado
-bool diccionari::conte_lletra(const string& subpatron, char letra, int inicio, int fin)  const {
-    if (inicio > fin) return false; // Caso base: la letra no está en el rango
-
-    int mig = (inicio + fin) / 2;
-
-    if (subpatron[mig] == letra) {
-        return true; // La letra coincide con el punto medio
-    } else if (letra < subpatron[mig]) {
-        return conte_lletra(subpatron, letra, inicio, mig - 1); // Buscar en la mitad izquierda
-    } else {
-        return conte_lletra(subpatron, letra, mig + 1, fin); // Buscar en la mitad derecha
+        satisfan_patro_aux(arrel->_dre, patro, pos, actual, L);
     }
 }
 
+/* Cost temporal: O(log(l)), on l és la longitud del subpatró.
+   Això es deu a la cerca binària utilitzada per trobar lletra dins del subpatró ordenat. */
+bool diccionari::conte_lletra(string& subpatro, char lletra, int inici, int fi)  const {
+    bool trobat = false;
 
+    if (inici <= fi) {
+        int mig = (inici+fi) / 2;
+
+        if (subpatro[mig] == lletra) trobat = true;
+        else if (lletra < subpatro[mig]) trobat = conte_lletra(subpatro, lletra, inici, mig-1);
+        else trobat = conte_lletra(subpatro, lletra, mig+1, fi);
+    }
+
+    return trobat;
+}
+
+/* Cost temporal: O(n), on n és el nombre total de nodes al TST.
+   Això es deu al fet que es recorre tot l'arbre per generar la llista de paraules amb longitud >= k. */
 void diccionari::llista_paraules(nat k, list<string>& L) const throw(error) {
     llista_paraules_aux(_arrel, k, L, 0, "");
 }
 
+/* Cost temporal: O(p), on p és el nombre de nodes al subarbre arrelat a arrel.
+   Si hi ha poques paraules amb longitud >= k, el cost serà proper a O(m), on m és el nombre de paraules afegides a L. */
 void diccionari::llista_paraules_aux(node* arrel, nat k, list<string>& L, nat nivell, string paraula) const throw(error) {
     if (arrel != nullptr) {
         llista_paraules_aux(arrel->_esq, k, L, nivell, paraula);
@@ -180,6 +194,7 @@ void diccionari::llista_paraules_aux(node* arrel, nat k, list<string>& L, nat ni
     }
 }
 
+/* Cost temporal: O(1) */
 nat diccionari::num_pal() const throw() {
     return _numPal;
 }

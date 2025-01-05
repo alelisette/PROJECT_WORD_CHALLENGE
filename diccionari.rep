@@ -1,17 +1,53 @@
 struct node {
-    char _lletra;
-    node* _esq;
-    node* _cen;
-    node* _dre;
+    char _lletra; /* Representa una lletra d'una paraula del diccionari. El símbol # representa el final d'una paraula. */
+    node* _esq; /* Punter al subarbre esquerre. Conté nodes amb lletres menors a _lletra segons l'ordre lexicogràfic. */
+    node* _cen; /* Punter al subarbre central. Representa la continuació de la paraula si _lletra és part d'una paraula del diccionari. */
+    node* _dre; /* Punter al subarbre dret. Conté nodes amb lletres majors a _lletra segons l'ordre lexicogràfic. */
 };
 
-node* _arrel;
-nat _numPal;
+node* _arrel; /* Apunta al node arrel del TST. És el punt d'entrada i cerca del diccionari. */
+nat _numPal; /* Nombre total de paraules al diccionari. */
 
+/* Aquest disseny utilitza un Ternary Search Tree (TST), que és molt eficient per gestionar diccionaris.
+   Justificació:
+   - Un TST combina avantatges dels tries i els arbres binaris de cerca:
+     1. **Memòria més eficient** que un trie estàndard, ja que no necessita espai per a fills buits.
+     2. **Cerca ràpida** per prefixos o patrons, perquè l'estructura permet navegar eficientment.
+     3. **Manté ordre lexicogràfic** de les paraules, simplificant la generació de llistes ordenades.
+   - Aquesta estructura permet operacions com inserir, cercar o llistar amb complexitat òptima en molts casos. */
+
+
+/* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït.
+   Post: Retorna un punter a un nou arbre que és una còpia exacta del subarbre arrelat a arrel. */
 node* copia(node* arrel);
+
+/* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït.
+   Post: Allibera la memòria de tots els nodes del subarbre arrelat a arrel. Si arrel és nul, no fa res. */
 void esborra(node* arrel);
+
+/* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït. 
+          paraulaNova no és buida i conté la paraula a inserir amb un símbol '#' al final.
+   Post: Insereix la paraulaNova al subarbre arrelat a arrel si no existia prèviament. 
+         Retorna el punter a l'arrel actualitzada del subarbre. */
 node* insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error);
+
+/* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït. 
+          p no és buida i conté una paraula amb un símbol '#' al final.
+   Post: Retorna el prefix més llarg de p que és una paraula al diccionari, o una cadena buida si cap prefix de p és vàlid. */
 string prefix_aux(node* arrel, const string& p, nat index) const throw(error);
-void satisfan_patro_aux(node* arrel, const vector<string>& q, nat pos, string& actual, list<string>& L) const throw(error);
+
+/* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït. 
+          patro és un vector d'strings on cada string està ordenat lexicogràficament.
+          pos indica la posició actual en el vector patro.
+   Post: Afegeix a la llista L totes les paraules del subarbre arrelat a arrel que satisfan el patró especificat per patro. */
+void satisfan_patro_aux(node* arrel, const vector<string>& patro, nat pos, string& actual, list<string>& L) const throw(error);
+
+/* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït.
+          k indica la longitud mínima de les paraules a incloure.
+          nivell indica la profunditat actual en l'arbre, i paraula conté el prefix parcial actual.
+   Post: Afegeix a la llista L totes les paraules del subarbre arrelat a arrel amb longitud >= k en ordre alfabètic. */
 void llista_paraules_aux(node* arrel, nat k, list<string>& L, nat nivell, string paraula) const throw(error);
-bool conte_lletra(const string& subpatron, char letra, int inicio, int fin)  const;
+
+/* Pre:  subpatro és un string ordenat lexicogràficament, i inici <= fi són índexs vàlids dins de subpatro.
+   Post: Retorna cert si lletra està present a subpatro dins del rang [inici, fi]. Altrament, retorna fals. */
+bool conte_lletra(string& subpatro, char lletra, int inici, int fi) const;

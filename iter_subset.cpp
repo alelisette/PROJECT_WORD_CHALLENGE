@@ -1,6 +1,6 @@
 #include "iter_subset.hpp"
 
-/* Cost: O(k) */
+/* Cost temporal: O(k) */
 iter_subset::iter_subset(nat n, nat k) throw(error) {
    if (n < k) _end = true;
    else _end = false;
@@ -11,7 +11,7 @@ iter_subset::iter_subset(nat n, nat k) throw(error) {
    for (nat i = 0; i < k; ++i) _ss[i] = i+1;
 }
 
-/* Cost: O(k) */
+/* Cost temporal: O(k) */
 iter_subset::iter_subset(const iter_subset& its) throw(error) {
    _n = its._n;
    _k = its._k;
@@ -20,7 +20,7 @@ iter_subset::iter_subset(const iter_subset& its) throw(error) {
    _end = its._end;
 }
 
-/* Cost: O(k) */
+/* Cost temporal: O(k) */
 iter_subset &iter_subset::operator=(const iter_subset& its) throw(error){
    if (this != &its) {
       iter_subset aux(its);
@@ -34,17 +34,17 @@ iter_subset &iter_subset::operator=(const iter_subset& its) throw(error){
    return *this;
 }
 
-/* Cost: O(1) */
+/* Cost temporal: O(1) */
 iter_subset::~iter_subset() throw() {
 
 }
 
-/* Cost: O(1) */
+/* Cost temporal: O(1) */
 bool iter_subset::end() const throw() {
    return _end;
 }
 
-/* Cost: O(k) */
+/* Cost temporal: O(k) */
 subset iter_subset::operator*() const throw(error) {
    if (_end) {
       error err(IterSubsetIncorr);
@@ -54,7 +54,7 @@ subset iter_subset::operator*() const throw(error) {
    return _ss;
 }       
 
-/* Cost: O(k) */
+/* Cost temporal: O(k) */
 iter_subset& iter_subset::operator++() throw() {
    if (not _end) {
       int index = _k-1;
@@ -70,14 +70,14 @@ iter_subset& iter_subset::operator++() throw() {
    return *this;
 }
 
-/* Cost: O(k) */
+/* Cost temporal: O(k) */
 iter_subset iter_subset::operator++(int) throw() {
    iter_subset anterior = *this;
    operator++();
    return anterior;
 }
 
-/* Cost: O(k) */
+/* Cost temporal: O(k) */
 bool iter_subset::operator==(const iter_subset& c) const throw() {
    bool iguals = true;
 
@@ -93,7 +93,7 @@ bool iter_subset::operator==(const iter_subset& c) const throw() {
    return iguals;
 } 
 
-/* Cost: O(k) */
+/* Cost temporal: O(k) */
 bool iter_subset::operator!=(const iter_subset& c) const throw() {
    return not (*this == c);
 }
