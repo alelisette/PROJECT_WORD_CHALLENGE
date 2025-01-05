@@ -162,12 +162,12 @@ void diccionari::llista_paraules(nat k, list<string>& L) const throw(error) {
 
 void diccionari::llista_paraules_aux(node* arrel, nat k, list<string>& L, nat nivell, string paraula) const throw(error) {
     if (arrel != nullptr) {
-        llista_paraules_aux(_arrel->_esq, k, L, nivell, paraula);
+        llista_paraules_aux(arrel->_esq, k, L, nivell, paraula);
 
-        if (arrel->_lletra != '#') llista_paraules_aux(_arrel->_cen, k, L, nivell+1, paraula+arrel->_lletra);
+        if (arrel->_lletra != '#') llista_paraules_aux(arrel->_cen, k, L, nivell+1, paraula+arrel->_lletra);
         else if (k <= nivell) L.push_back(paraula);
         
-        llista_paraules_aux(_arrel->_dre, k, L, nivell, paraula);
+        llista_paraules_aux(arrel->_dre, k, L, nivell, paraula);
     }
 }
 
