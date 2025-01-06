@@ -1,5 +1,4 @@
 #include "diccionari.hpp"
-#include "word_toolkit.hpp"
 
 /* Cost temporal: O(1) */
 diccionari::diccionari() throw(error) {
@@ -122,24 +121,21 @@ string diccionari::prefix_aux(node* arrel, const string& p, nat index) const thr
     return paraula;
 }
 
-/* Cost temporal: O(p + m * log(m)), on:
+/* Cost temporal: O(p + m * s), on:
    - p és el nombre de nodes explorats al TST.
    - m és el nombre de paraules que satisfan el patró.
-   El cost mig depèn de la complexitat del patró i de l'esparsitat de les paraules dins del diccionari. */
+   - s és la longitud mitjana del subpatró en el vector 'q'. */
 void diccionari::satisfan_patro(const vector<string>& q, list<string>& L) const throw(error) {
-    vector<string> patro(q.size());
-    for (nat i = 0; i < q.size(); ++i) {
-        patro[i] = word_toolkit::anagrama_canonic(q[i]); // Ordena lexicogràficament els elements de q
-    }
-
     string actual = ""; // String temporal per construir paraules
-    satisfan_patro_aux(_arrel, patro, 0, actual, L); 
+    satisfan_patro_aux(_arrel, q, 0, actual, L); 
 }
 
-/* Cost temporal: O(p + m * log(m)), on:
+/* Cost temporal: O(p + m * s), on:
    - p és el nombre de nodes al subarbre arrelat a arrel.
    - m és el nombre total de paraules que satisfan el patró.
-   El cost mig depèn de l'esparsitat del patró dins del diccionari. */
+   - s és la longitud mitjana del subpatró en el vector 'patro'.
+   El cost mig depèn de l'esparsitat del patró dins del diccionari i de la distribució
+   dels nodes en el TST. */
 void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& patro, nat pos, string& actual, list<string>& L) const throw(error) {
     if (arrel != nullptr) {
         satisfan_patro_aux(arrel->_esq, patro, pos, actual, L);
@@ -147,7 +143,7 @@ void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& patro, na
         if (pos < patro.size()) {
             string subpatro = patro[pos];
 
-            if (conte_lletra(subpatro, arrel->_lletra, 0, subpatro.size()-1)) {
+            if (subpatro.find(arrel->_lletra) != string::npos) { // Cost temporal de find: O(s), on s és la longitud del subpatró. 
                 actual += arrel->_lletra;
                 satisfan_patro_aux(arrel->_cen, patro, pos+1, actual, L);
                 actual.pop_back();
@@ -157,22 +153,6 @@ void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& patro, na
 
         satisfan_patro_aux(arrel->_dre, patro, pos, actual, L);
     }
-}
-
-/* Cost temporal: O(log(l)), on l és la longitud del subpatró.
-   Això es deu a la cerca binària utilitzada per trobar lletra dins del subpatró ordenat. */
-bool diccionari::conte_lletra(string& subpatro, char lletra, int inici, int fi)  const {
-    bool trobat = false;
-
-    if (inici <= fi) {
-        int mig = (inici+fi) / 2;
-
-        if (subpatro[mig] == lletra) trobat = true;
-        else if (lletra < subpatro[mig]) trobat = conte_lletra(subpatro, lletra, inici, mig-1);
-        else trobat = conte_lletra(subpatro, lletra, mig+1, fi);
-    }
-
-    return trobat;
 }
 
 /* Cost temporal: O(n), on n és el nombre total de nodes al TST.

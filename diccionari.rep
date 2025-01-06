@@ -37,7 +37,7 @@ node* insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(erro
 string prefix_aux(node* arrel, const string& p, nat index) const throw(error);
 
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït. 
-          patro és un vector d'strings on cada string està ordenat lexicogràficament.
+          patro és un vector d'strings.
           pos indica la posició actual en el vector patro.
    Post: Afegeix a la llista L totes les paraules del subarbre arrelat a arrel que satisfan el patró especificat per patro. */
 void satisfan_patro_aux(node* arrel, const vector<string>& patro, nat pos, string& actual, list<string>& L) const throw(error);
@@ -47,7 +47,3 @@ void satisfan_patro_aux(node* arrel, const vector<string>& patro, nat pos, strin
           nivell indica la profunditat actual en l'arbre, i paraula conté el prefix parcial actual.
    Post: Afegeix a la llista L totes les paraules del subarbre arrelat a arrel amb longitud >= k en ordre alfabètic. */
 void llista_paraules_aux(node* arrel, nat k, list<string>& L, nat nivell, string paraula) const throw(error);
-
-/* Pre:  subpatro és un string ordenat lexicogràficament, i inici <= fi són índexs vàlids dins de subpatro.
-   Post: Retorna cert si lletra està present a subpatro dins del rang [inici, fi]. Altrament, retorna fals. */
-bool conte_lletra(string& subpatro, char lletra, int inici, int fi) const;
