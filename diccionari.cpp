@@ -70,7 +70,7 @@ void diccionari::insereix(const string& p) throw(error) {
 diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error) {
     if (arrel == nullptr) {
         arrel = new node;
-        if (novaArrel == nullptr) throw error(0);
+        if (arrel == nullptr) throw error(0);
         
         arrel->_lletra = paraulaNova[index];
         arrel->_cen = nullptr;
