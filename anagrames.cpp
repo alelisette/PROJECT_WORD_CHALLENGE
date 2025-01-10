@@ -1,6 +1,7 @@
 #include "anagrames.hpp"
 #include "word_toolkit.hpp"
 
+/* Cost temporal: O(1) */
 anagrames::anagrames() throw(error) : diccionari() {
 
 }
@@ -58,7 +59,12 @@ void anagrames::insereix(const string& p) throw(error) {
   }
 }
 
-/* Cost temporal: O(log n + m), on 'n' és la mida de '_taula' i 'm' és la mida de la llista 'L'. */
+/** 
+ * Cost temporal: O(a.size() + log n + m), on:
+ *  - 'a.size()' és el cost de verificar si 'a' és canònic.
+ *  - 'log n' és el cost de la cerca dicotòmica a '_taula'.
+ *  - 'm' és la mida de la llista '_anagrames' associada al node amb el canònic 'a'.
+ */
 void anagrames::mateix_anagrama_canonic(const string& a, list<string>& L) const throw(error) {
     if (not word_toolkit::es_canonic(a)) { // Cost: O(a.size())
       throw error(NoEsCanonic);
@@ -68,7 +74,7 @@ void anagrames::mateix_anagrama_canonic(const string& a, list<string>& L) const 
 
     int idx = cerca_dicotomica(a); // Cost: O(log(_taula.size()))
     if (0 <= idx) {
-        L = _taula[idx]._anagrames;  
+        L = _taula[idx]._anagrames; // Cost: O(L.size())
     }
 }
 

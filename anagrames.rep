@@ -1,22 +1,58 @@
-// anagrames.rep
-
-// Estructura para mantener el anagrama canónico y todas las palabras asociadas.
-// - canonic : string con las letras de la palabra ordenadas de menor a mayor.
-// - words   : lista de palabras que comparten ese anagrama canónico, ordenadas.
+/**
+ * Node guarda el grup de paraules inserides en el diccionari que tenen el mateix anagrama
+ * canònic i guarda aquest anagrama canònic per facilitar la seva localització (del node).
+ */
 struct node {
+  /**
+   * _canonic és l'anagrama canònic de les paraules de la llista _anagrames, per tant és
+   * un string ordenat alfabèticament. 
+   */
   string _canonic;
-  list<string> _anagrames;  // se mantienen en orden ascendente para poder retornar directamente en orden
+
+  /**
+   * _anagrames és una llista de strings ordenada de manera ascendent, que són les paraules
+   * inserides en el diccionari anagrames que tenen en comú l'anagrama canònic (_canonic)
+   */
+  list<string> _anagrames; 
 };
 
+/**
+ * Vector de nodes on guardarem els anagrames canónics únics de les paraules inserides 
+ * en el diccionari anagrames. Aquest vector està en ordre ascendent i no té repetits.
+ */
+vector<node> _taula; 
 
-  // Tabla principal (vector) que almacena pares (canonic, lista de palabras).
-  // Se mantiene ORDENADA por el campo 'canonic'.
-vector<node> _taula;
-
-/** 
+/**
  * Pre: El paràmetre 'a' és un string que representa una paraula canònica. 
  *      L'atribut '_taula' és un vector ordenat que conté elements amb un camp '_canonic'.
  * Post: Retorna la posició de l'element de '_taula' que té un camp '_canonic' igual a 'a'.
  *       Si no es troba, retorna la posició negativa on hauria d'estar (-esq - 1).
  */
 int cerca_dicotomica(const string &a) const;
+
+
+/**
+ * Hem escollit guardar els anagrames canònics en un vector perquè, tot i que en un principi
+ * sembla que pot tenir massa cost espaial, si del nombre de paraules que pot haver en un 
+ * diccionari si ens quedem amb els anagrames canònics no és tan gran relativament. Ho vam 
+ * implementar també amb un TST però hem vist que si no hi coincideixen molt els prefixos
+ * tampoc aprofitarem massa 'estructura de l'arbre.
+ * 
+ * Cost espacial: O(n * m + k * p), on:
+ *  - 'n' és la mida de '_taula' (número de nodes).
+ *  - 'm' és la mida mitjana dels strings '_canonic' (cada string ocupa O(m) espai).
+ *  - 'k' és el nombre mitjà de paraules per cada node.
+ *  - 'p' és la mida mitjana de cada paraula emmagatzemada en la llista '_anagrames' 
+ * (cada paraula ocupa O(p) espai). En total, l'espai necessari depèn del nombre de nodes, 
+ * les paraules per node i la mida de les paraules.
+ * 
+ * El cost temporal és el que més ens ha convençut de triar el vector ja que al estar sempre
+ * ordenat, la cerca d'un anagrama canònic sempre té cost logarítmic, mentre que en el TST
+ * només tindrà el mateix cost si l'arbre està equilibrat, a un TST desequilibrat el cost 
+ * d'una cerca es torna linial.
+ * 
+ * Cost temporal de mateix_anagrama_canonic: com podem veure a anagrames.cpp la còpia de la
+ * llista sempre és linial per tant el que hem buscat optimitzar és la cerca de l'anagrama
+ * canònic. En un arbre desequilibrat fer aquesta cerca pot tenir un cost linial que 
+ * guanyi al cost de la còpia de la llista. 
+ */

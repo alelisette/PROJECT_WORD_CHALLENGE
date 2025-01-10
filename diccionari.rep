@@ -18,8 +18,9 @@ nat _numPal; /* Nombre total de paraules al diccionari. */
 
 
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït.
-   Post: Retorna un punter a un nou arbre que és una còpia exacta del subarbre arrelat a arrel. */
-node* copia(node* arrel);
+   Post: Retorna un punter a un nou arbre que és una còpia exacta del subarbre arrelat a arrel. 
+   Llança un error si ja no hi ha més memòria. */
+node* copia(node* arrel) throw(error);
 
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït.
    Post: Allibera la memòria de tots els nodes del subarbre arrelat a arrel. Si arrel és nul, no fa res. */

@@ -26,11 +26,13 @@ diccionari& diccionari::operator=(const diccionari& D) throw(error) {
 }
 
 /* Cost temporal: O(n), n = nombre de nodes al subarbre arrelat a arrel. */
-diccionari::node* diccionari::copia(node* arrel) {
+diccionari::node* diccionari::copia(node* arrel) throw(error) {
     node* novaArrel = nullptr;
     
     if (arrel != nullptr) {
         novaArrel = new node;
+        if (novaArrel == nullptr) throw error(0);
+
         novaArrel->_lletra = arrel->_lletra;
         novaArrel->_cen = copia(arrel->_cen);
         novaArrel->_esq = copia(arrel->_esq);
@@ -68,6 +70,8 @@ void diccionari::insereix(const string& p) throw(error) {
 diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error) {
     if (arrel == nullptr) {
         arrel = new node;
+        if (novaArrel == nullptr) throw error(0);
+        
         arrel->_lletra = paraulaNova[index];
         arrel->_cen = nullptr;
         arrel->_esq = nullptr;
