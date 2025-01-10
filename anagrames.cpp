@@ -39,7 +39,8 @@ void anagrames::insereix(const string& p) throw(error) {
   diccionari::insereix(p);
 
   // 2) Averiguar el anagrama canónico de p
-  string c = to_canonic(p);
+  //string c = to_canonic(p);
+  string c = word_toolkit::anagrama_canonic(p);
 
   // 3) Buscar en an_table si c ya existe
   int idx = find_canonic(c);
@@ -99,13 +100,6 @@ void anagrames::mateix_anagrama_canonic(const string& a, list<string>& L) const 
   
 }
 
-  // Método auxiliar: dada una palabra p, retorna su anagrama canónico
-  // (ordena las letras de p alfabéticamente).
-string anagrames::to_canonic(const string& p) {
-    string c = p;
-    sort(c.begin(), c.end());  // usa <algorithm>
-    return c;
-  }
 
   // Búsqueda binaria del string 'a' en an_table, que está ordenado por nodeAC.canonic.
   // Devuelve:
