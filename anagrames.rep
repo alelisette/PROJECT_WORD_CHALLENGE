@@ -1,0 +1,26 @@
+// anagrames.rep
+
+// Estructura para mantener el anagrama canónico y todas las palabras asociadas.
+// - canonic : string con las letras de la palabra ordenadas de menor a mayor.
+// - words   : lista de palabras que comparten ese anagrama canónico, ordenadas.
+struct node {
+  string canonic;
+  list<string> words;  // se mantienen en orden ascendente para poder retornar directamente en orden
+};
+
+
+  // Tabla principal (vector) que almacena pares (canonic, lista de palabras).
+  // Se mantiene ORDENADA por el campo 'canonic'.
+  vector<node> ana_taula;
+  
+  // Método auxiliar: dada una palabra p, retorna su anagrama canónico
+  // (ordena las letras de p alfabéticamente).
+  static string to_canonic(const string& p);
+
+  // Búsqueda binaria del string 'a' en an_table, que está ordenado por nodeAC.canonic.
+  // Devuelve:
+  //   - índice >= 0 si se ha encontrado 'a'
+  //   - número negativo -(pos-1) si no se ha encontrado, donde 'pos' es
+  //     la posición donde se debería insertar para mantener el orden.
+  //     (convención típica de algunas funciones de búsqueda binaria)
+  int find_canonic(const string &a) const;
