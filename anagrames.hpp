@@ -28,6 +28,7 @@ public:
      Post: Retorna la llista de paraules p tals que anagrama_canonic(p)=a.
      Llança un error si les lletres de a no estan en ordre ascendent. */
   void mateix_anagrama_canonic(const string& a, list<string>& L) const throw(error);
+  
 
   /* Gestió d'errors. */
   static const int NoEsCanonic = 21;
