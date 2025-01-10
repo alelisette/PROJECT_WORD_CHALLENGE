@@ -4,19 +4,19 @@
 // - canonic : string con las letras de la palabra ordenadas de menor a mayor.
 // - words   : lista de palabras que comparten ese anagrama canónico, ordenadas.
 struct node {
-  string canonic;
-  list<string> words;  // se mantienen en orden ascendente para poder retornar directamente en orden
+  string _canonic;
+  list<string> _anagrames;  // se mantienen en orden ascendente para poder retornar directamente en orden
 };
 
 
   // Tabla principal (vector) que almacena pares (canonic, lista de palabras).
   // Se mantiene ORDENADA por el campo 'canonic'.
-  vector<node> ana_taula;
+vector<node> _taula;
 
-  // Búsqueda binaria del string 'a' en an_table, que está ordenado por nodeAC.canonic.
-  // Devuelve:
-  //   - índice >= 0 si se ha encontrado 'a'
-  //   - número negativo -(pos-1) si no se ha encontrado, donde 'pos' es
-  //     la posición donde se debería insertar para mantener el orden.
-  //     (convención típica de algunas funciones de búsqueda binaria)
-  int find_canonic(const string &a) const;
+/** 
+ * Pre: El paràmetre 'a' és un string que representa una paraula canònica. 
+ *      L'atribut '_taula' és un vector ordenat que conté elements amb un camp '_canonic'.
+ * Post: Retorna la posició de l'element de '_taula' que té un camp '_canonic' igual a 'a'.
+ *       Si no es troba, retorna la posició negativa on hauria d'estar (-esq - 1).
+ */
+int cerca_dicotomica(const string &a) const;
