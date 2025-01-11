@@ -6,14 +6,13 @@ struct node {
 };
 
 node* _arrel; /* Apunta al node arrel del TST. És el punt d'entrada i cerca del diccionari. */
-nat _numPal; /* Nombre total de paraules al diccionari. */
+nat _numPal; /* Nombre total de paraules al diccionari. Aquest atribut fa que la funció num_pal() tingui cost constant. */
 
-/* Aquest disseny utilitza un Ternary Search Tree (TST), que és molt eficient per gestionar diccionaris.
-   Justificació:
+/* hem escollit implementar un Ternary Search Tree (TST) per els següents motius:
    - Un TST combina avantatges dels tries i els arbres binaris de cerca:
-     1. **Memòria més eficient** que un trie estàndard, ja que no necessita espai per a fills buits.
-     2. **Cerca ràpida** per prefixos o patrons, perquè l'estructura permet navegar eficientment.
-     3. **Manté ordre lexicogràfic** de les paraules, simplificant la generació de llistes ordenades.
+     1. Memòria més eficient que un trie estàndard, ja que no necessita espai per a fills buits.
+     2. Cerca ràpida per prefixos o patrons, perquè l'estructura permet navegar eficientment.
+     3. Manté ordre lexicogràfic de les paraules, simplificant la generació de llistes ordenades.
    - Aquesta estructura permet operacions com inserir, cercar o llistar amb complexitat òptima en molts casos. */
 
 
