@@ -16,6 +16,7 @@ static string obte_subset_canonic(const string& s, const subset& subs) {
   subs_can = word_toolkit::anagrama_canonic(subs_can);
   return subs_can;
 }
+
 /**
  * Pre: paraules esta ordenat alfabeticament
  * Post: insereix p en la posicio adequada per mantenir l'ordre alfabetic de les paraules i 
