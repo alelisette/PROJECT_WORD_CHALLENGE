@@ -78,7 +78,7 @@ diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNov
         arrel->_dre = nullptr;
 
         if (index < paraulaNova.size()-1) arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
-        else ++_numPal; // Hem acabat d'inserir la paraula nova
+        else ++_numPal;
     }
     else if (paraulaNova[index] < arrel->_lletra) arrel->_esq = insereix_aux(arrel->_esq, paraulaNova, index);
     else if (arrel->_lletra < paraulaNova[index]) arrel->_dre = insereix_aux(arrel->_dre, paraulaNova, index);
@@ -91,38 +91,32 @@ diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNov
    En un TST equilibrat, h = O(log(n)), on n és el nombre de paraules al diccionari. 
    En el pitjor cas, si el TST està completament desequilibrat, h = O(n). */
 string diccionari::prefix(const string& p) const throw(error) {
-    string paraula = "";
-    if (p != "") paraula = prefix_aux(_arrel, p+'#', 0);
-    if (paraula != "") paraula.pop_back(); // Traiem el símbol # si cal
+    string paraula;
+    if (p != "") prefix_aux(_arrel, p+'#', 0, paraula);
+    if (paraula != "") paraula.pop_back();
     return paraula;
 }
 
-/* Cost temporal: O(h), on h és l'alçada del subarbre arrelat a arrel. 
-   En el cas mitjà d'un TST equilibrat, h = O(log(n)), on n és el nombre de paraules.
+/* Cost temporal: O(h), on h és l'alçada del TST.
+   En un TST equilibrat, h = O(log(n)), on n és el nombre de paraules al diccionari.
    En el pitjor cas, si el TST està completament desequilibrat, h = O(n). */
-string diccionari::prefix_aux(node* arrel, const string& p, nat index) const throw(error) {
-    string paraula = "";
-
-    if (arrel != nullptr) {
-        string sufix1 = "";
-        string sufix2 = "";
-        
-        node* actual = arrel; // Mirem si hi ha una paraula sencera a aquest nivell
-        while (actual->_esq != nullptr) actual = actual->_esq;
-        if (actual->_lletra == '#') sufix1 += actual->_lletra;
-
+void diccionari::prefix_aux(node* arrel, const string& p, nat index, string& paraula) const throw(error) {
+    if (arrel != nullptr) {     
         if (arrel->_lletra == p[index]) {
-            sufix2 = arrel->_lletra;
-            if (index < p.size()) sufix2 += prefix_aux(arrel->_cen, p, index+1); 
+            paraula.push_back(arrel->_lletra);
+            if (index < p.size()) prefix_aux(arrel->_cen, p, index+1, paraula); 
         }
-        else if (p[index] < arrel->_lletra) sufix2 = prefix_aux(arrel->_esq, p, index);
-        else sufix2 = prefix_aux(arrel->_dre, p, index);
+        else if (p[index] < arrel->_lletra) prefix_aux(arrel->_esq, p, index, paraula); 
+        else prefix_aux(arrel->_dre, p, index, paraula); 
 
-        paraula = sufix1;
-        if (sufix2 != "" and sufix2[sufix2.size()-1] == '#') paraula = sufix2;
+        if (paraula == "" or paraula[paraula.size()-1] != '#') {
+            if (paraula != "") paraula = paraula.substr(0, index);
+
+            node* nodeAct = arrel;
+            while (nodeAct->_esq != nullptr) nodeAct = nodeAct->_esq;
+            if (nodeAct->_lletra == '#') paraula.push_back(nodeAct->_lletra); 
+        }
     }
-
-    return paraula;
 }
 
 /* Cost temporal: O(p + m * s), on:
@@ -130,7 +124,7 @@ string diccionari::prefix_aux(node* arrel, const string& p, nat index) const thr
    - m és el nombre de paraules que satisfan el patró.
    - s és la longitud mitjana del subpatró en el vector 'q'. */
 void diccionari::satisfan_patro(const vector<string>& q, list<string>& L) const throw(error) {
-    string actual = ""; // String temporal per construir paraules
+    string actual; // String temporal per construir paraules
     satisfan_patro_aux(_arrel, q, 0, actual, L); 
 }
 
@@ -148,7 +142,7 @@ void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& patro, na
             string subpatro = patro[pos];
 
             if (subpatro.find(arrel->_lletra) != string::npos) { // Cost temporal de find: O(s), on s és la longitud del subpatró. 
-                actual += arrel->_lletra;
+                actual.push_back(arrel->_lletra);
                 satisfan_patro_aux(arrel->_cen, patro, pos+1, actual, L);
                 actual.pop_back();
             }
