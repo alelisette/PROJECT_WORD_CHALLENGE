@@ -1,6 +1,6 @@
 #! /bin/bash
 
-EXE_PATH="../../src"
+EXE_PATH="."
 for f in jp_public_word_toolkit jp_public_iter_subset jp_public_diccionari jp_public_anagrames jp_public_obte_paraules jp_public
 do
   echo "Testejant" ${f}

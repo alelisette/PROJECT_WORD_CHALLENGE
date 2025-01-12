@@ -11,7 +11,7 @@ anagrames::anagrames(const anagrames& A) throw(error) : diccionari(A)  {
   _taula = A._taula;
 }
 
-/* Cost temporal: O(L.size()) */
+/* Cost temporal: O(_taula.size()) */
 anagrames& anagrames::operator=(const anagrames& A) throw(error) {
     if (this != &A) {
       diccionari::operator=(A);
