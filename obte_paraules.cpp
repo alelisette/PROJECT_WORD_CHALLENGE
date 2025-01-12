@@ -4,9 +4,9 @@
 
 /**
  * Pre: s es un string passat per referencia i subs és un conjunt valid o 
- * sigui tots els indexos es troben entre [1,s.size()].
+ *      sigui tots els indexos es troben entre [1,s.size()].
  * Post: Retorna substring que correspon als caracters de s seleccionats segons els indexos 
- * en subs. Com que subs i s estan ordenats, el substring també està ordenat alfabèticament.
+ *      en subs. Com que subs i s estan ordenats, el substring també està ordenat alfabèticament.
  * Cost: O(k) on k es la mida de subs.
 */
 static string obte_subset(const string& s, const subset& subs) {
@@ -16,15 +16,11 @@ static string obte_subset(const string& s, const subset& subs) {
 }
 
 /**
- * Pre: k <= s.size() i k>=3
- * Post: paraules conte totes les paraules que son anagrames dels subconjunts de longitud k de s 
- * Cost:
-     * O((C(n, k)) * (k + m + (p + m))),
-     * on:
+ * Cost: O((C(n, k)) * (k + m + (p + m))), on:
      * - C(n, k) es el nombre de combinacions de n elements agafats de k en k.
-     * - k es la longitud dels subset.
-     * - m es el nombre de paraules obtingudes por A.mateix_anagrama_canonic.
-     * - p es la mida actual de la llista `paraules`.
+     * - k és la longitud dels subset.
+     * - m és el nombre de paraules obtingudes por A.mateix_anagrama_canonic.
+     * - p és la mida actual de la llista `paraules`.
      * 
      * Nota:
      * - Generar subconjunts de longitud k te coste O(C(n, k)) on C fa referencia a la combinatoria.
@@ -53,15 +49,10 @@ void obte_paraules::obte_paraules(nat k, const string& s, const anagrames& A, li
 }
 
 /**
- * Pre: s.size() >= 3
- * Post: paraules conte totes les paraules que son anagrames de tots els subconjunts
- * de longitud entre 3 i s.size() de s.
- * Cost: 
- *   * O(Σ(k=3..n) [C(n, k) * (k + m + p + m ]),
-     * on:
-     * - [ C(n, k) * (k + m + p + m ] és el cost de obte_paraules(k, s, A, paraulesK).
-     * Nota:
-     * Aquest cost pot arribar a ser exponencial en funció del valor de n degut al terme de combinatoria C(n,k).
+ * Cost: O(Σ(k=3..s.size()) * [C(n, k) * (k + m + p + m)]), on:
+ * [C(n, k) * k + m + p + m] és el cost de obte_paraules(k, s, A, paraulesK):
+     * Nota: Aquest cost pot arribar a ser exponencial en funció del valor de n degut 
+     * al terme de combinatoria C(n,k).
 */
 void obte_paraules::obte_paraules(const string& s, const anagrames& A, list<string>& paraules) throw(error) {
   if (s.size() < 3) {
