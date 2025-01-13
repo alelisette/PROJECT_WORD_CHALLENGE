@@ -82,7 +82,7 @@ diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNov
     }
     else if (paraulaNova[index] < arrel->_lletra) arrel->_esq = insereix_aux(arrel->_esq, paraulaNova, index);
     else if (arrel->_lletra < paraulaNova[index]) arrel->_dre = insereix_aux(arrel->_dre, paraulaNova, index);
-    else arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
+    else if (index < paraulaNova.size()-1) arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
 
     return arrel;
 }
