@@ -32,11 +32,12 @@ int cerca_dicotomica(const string &a) const;
 
 
 /**
+ * Justificació de la representació:
  * Hem escollit guardar els anagrames canònics en un vector perquè, tot i que en un principi
  * sembla que pot tenir massa cost espaial, si del nombre de paraules que pot haver en un 
- * diccionari si ens quedem amb els anagrames canònics no és tan gran relativament. Ho vam 
+ * diccionari ens quedem amb els anagrames canònics no és tan gran relativament. Ho vam 
  * implementar també amb un TST però hem vist que si no hi coincideixen molt els prefixos
- * tampoc aprofitarem massa 'estructura de l'arbre.
+ * tampoc aprofitarem massa l'estructura de l'arbre.
  * 
  * Cost espacial: O(n * m + k * p), on:
  *  - 'n' és la mida de '_taula' (número de nodes).
@@ -48,8 +49,8 @@ int cerca_dicotomica(const string &a) const;
  * 
  * El cost temporal és el que més ens ha convençut de triar el vector ja que al estar sempre
  * ordenat, la cerca d'un anagrama canònic sempre té cost logarítmic, mentre que en el TST
- * només tindrà el mateix cost si l'arbre està equilibrat, a un TST desequilibrat el cost 
- * d'una cerca es torna linial.
+ * només el cost de la cerca serà proporcional a la mida de la paraula a cercar, el cost es 
+ * torna linial.
  * 
  * Cost temporal de mateix_anagrama_canonic: com podem veure a anagrames.cpp la còpia de la
  * llista sempre és linial per tant el que hem buscat optimitzar és la cerca de l'anagrama

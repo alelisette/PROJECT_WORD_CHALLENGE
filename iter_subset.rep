@@ -16,10 +16,10 @@ nat _k;
 subset _ss;
 
 /* Booleà que indica si l'iterador ha arribat al final del recorregut (no queden més
-    subconjunts). Determinar quan l'iterador ha acabat el "recorregut" (no recorre
-    res sino que va canviant els elements de _ss) i optimitzar l'execució 
+    subconjunts). Determina quan l'iterador ha acabat el "recorregut" (no recorre
+    res sino que va canviant els elements de _ss) i optimitza l'execució 
     evitant operacions innecessàries.
-    Quan _k = 0 -> iter_subset "apunta" a un subconjunt buit i _end = false */
+    Quan _k = 0 iter_subset "apunta" a un subconjunt buit i _end = false */
 bool _end;
 
 /* Justificació de la representació:

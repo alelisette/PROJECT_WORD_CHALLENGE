@@ -21,7 +21,8 @@ string word_toolkit::anagrama_canonic(const string& s) throw() {
     return canonic;
 }
 
-/* Cost temporal: O(n^2), n = L.size() */
+/* Cost temporal: O(m + n*l), m = excl.size(), n = L.size(), 
+   l és la longitud mitjana de les paraules dins L. */
 char word_toolkit::mes_frequent(const string& excl, const list<string>& L) throw() {
     bool excl_array[26] = {false};
     for (unsigned int i = 0; i < excl.size(); ++i) {

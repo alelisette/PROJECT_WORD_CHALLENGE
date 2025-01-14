@@ -6,20 +6,20 @@ anagrames::anagrames() throw(error) : diccionari() {
 
 }
 
-/* Cost temporal: O(L.size()) */
+/* Cost temporal: O(n) on n és la mida de _taula */
 anagrames::anagrames(const anagrames& A) throw(error) : diccionari(A)  {
   _taula = A._taula;
 }
 
-/* Cost temporal: O(_taula.size()) */
+/* Cost temporal: O(n) on n és la mida de _taula */
 anagrames& anagrames::operator=(const anagrames& A) throw(error) {
-    if (this != &A) {
-      diccionari::operator=(A);
-      _taula = A._taula;
-    }
-
-    return *this;
+  if (this != &A) {
+    diccionari::operator=(A);
+    _taula = A._taula;
   }
+
+  return *this;
+}
 
 /* Cost temporal: O(1) */
 anagrames::~anagrames() throw() {
@@ -35,10 +35,10 @@ anagrames::~anagrames() throw() {
  *  - 'm' és la mida de la llista d'anagrames per la inserció en ella.
  */
 void anagrames::insereix(const string& p) throw(error) {
-  diccionari::insereix(p); // Cost: O(h), h = alçada del TST diccionari
+  diccionari::insereix(p); // Cost: O(p.size())
 
   string canonic = word_toolkit::anagrama_canonic(p); // Cost: O(p.size())
-  int idx = cerca_dicotomica(canonic); // Cost: O(log n)
+  int idx = cerca_dicotomica(canonic); // Cost: O(log(_taula.size()))
 
   if (idx >= 0) {
     list<string>::iterator it = _taula[idx]._anagrames.begin();
@@ -55,7 +55,7 @@ void anagrames::insereix(const string& p) throw(error) {
     nou._canonic = canonic;
     nou._anagrames.push_back(p);
 
-    _taula.insert(_taula.begin() + pos, nou); // Cost: O(n), n = mida de _taula
+    _taula.insert(_taula.begin() + pos, nou); // Cost: O(_taula.size())
   }
 }
 

@@ -12,8 +12,7 @@ diccionari::diccionari(const diccionari& D) throw(error) {
     _numPal = D._numPal;
 }   
 
-/* Cost temporal: O(n), on n és el nombre total de nodes del diccionari.
-   Això inclou copiar el diccionari `D` i alliberar els recursos del diccionari original. */
+/* Cost temporal: O(n), on n és el nombre total de nodes del diccionari. */
 diccionari& diccionari::operator=(const diccionari& D) throw(error) {
     if (this != &D) {
         node* aux = copia(D._arrel);
@@ -25,7 +24,7 @@ diccionari& diccionari::operator=(const diccionari& D) throw(error) {
     return *this;
 }
 
-/* Cost temporal: O(n), n = nombre de nodes al subarbre arrelat a arrel. */
+/* Cost temporal: O(n), on n és el nombre de nodes al subarbre arrelat a arrel. */
 diccionari::node* diccionari::copia(node* arrel) throw(error) {
     node* novaArrel = nullptr;
     
@@ -42,13 +41,12 @@ diccionari::node* diccionari::copia(node* arrel) throw(error) {
     return novaArrel;
 }
 
-/* Cost temporal: O(n), on n és el nombre total de nodes del diccionari.
-   L'alliberament dels recursos recorre tots els nodes. */
+/* Cost temporal: O(n), on n és el nombre total de nodes del diccionari. */
 diccionari::~diccionari() throw() {
     esborra(_arrel);
 }
 
-/* Cost temporal: O(n), n = nombre de nodes al subarbre arrelat a arrel. */
+/* Cost temporal: O(n), on n és el nombre de nodes al subarbre arrelat a arrel. */
 void diccionari::esborra(node* arrel) {
     if (arrel != nullptr) {
         esborra(arrel->_cen);
@@ -58,15 +56,27 @@ void diccionari::esborra(node* arrel) {
     }
 }
 
-/* Cost temporal: O(h), on h és l'alçada del TST.
-   En el cas mitjà d'un TST equilibrat, h = O(log(n)).
-   En el pitjor cas, h = O(n). */
+/* Cost temporal: O(n) on n és la mida de p+'#'
+en el pitjor cas el cost sería O(27*n) ja que el nostre TST gestiona 27 símbols (26 lletres i #)
+però 27 és una constant */
 void diccionari::insereix(const string& p) throw(error) {
-    if (p != "") _arrel = insereix_aux(_arrel, p+'#', 0);
+    if (p != "" and es_paraula_valida(p)) _arrel = insereix_aux(_arrel, p+'#', 0);
 }
 
-/* Cost temporal: O(h), on h és l'alçada del subarbre arrelat a arrel. 
-   En un TST equilibrat, h = O(log(n)), on n és el nombre total de paraules al diccionari. */
+/* Cost temporal: O(n) on n és la mida de p */
+bool diccionari::es_paraula_valida(const string& p) {
+    bool valida = true;
+    
+    nat i = 0;
+    while (valida and i < p.size()) {
+        if (p[i] < 'A' or 'Z' < p[i]) valida = false;
+        ++i;
+    }
+
+    return valida;
+}
+
+/* Cost temporal: O(n) on n és la mida de paraulaNova */
 diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error) {
     if (arrel == nullptr) {
         arrel = new node;
@@ -87,9 +97,7 @@ diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNov
     return arrel;
 }
 
-/* Cost temporal: O(h), on h és l'alçada del TST.
-   En un TST equilibrat, h = O(log(n)), on n és el nombre de paraules al diccionari. 
-   En el pitjor cas, si el TST està completament desequilibrat, h = O(n). */
+/* Cost temporal: O(n) on n és la mida de p */
 string diccionari::prefix(const string& p) const throw(error) {
     string paraula;
     if (p != "") prefix_aux(_arrel, p+'#', 0, paraula);
@@ -97,9 +105,7 @@ string diccionari::prefix(const string& p) const throw(error) {
     return paraula;
 }
 
-/* Cost temporal: O(h), on h és l'alçada del TST.
-   En un TST equilibrat, h = O(log(n)), on n és el nombre de paraules al diccionari.
-   En el pitjor cas, si el TST està completament desequilibrat, h = O(n). */
+/* Cost temporal: O(n) on n és la mida de p */
 void diccionari::prefix_aux(node* arrel, const string& p, nat index, string& paraula) const throw(error) {
     if (arrel != nullptr) {     
         if (arrel->_lletra == p[index]) {
@@ -124,7 +130,7 @@ void diccionari::prefix_aux(node* arrel, const string& p, nat index, string& par
    - m és el nombre de paraules que satisfan el patró.
    - s és la longitud mitjana del subpatró en el vector 'q'. */
 void diccionari::satisfan_patro(const vector<string>& q, list<string>& L) const throw(error) {
-    string actual; // String temporal per construir paraules
+    string actual;
     satisfan_patro_aux(_arrel, q, 0, actual, L); 
 }
 
@@ -153,14 +159,12 @@ void diccionari::satisfan_patro_aux(node* arrel, const vector<string>& patro, na
     }
 }
 
-/* Cost temporal: O(n), on n és el nombre total de nodes al TST.
-   Això es deu al fet que es recorre tot l'arbre per generar la llista de paraules amb longitud >= k. */
+/* Cost temporal: O(n), on n és el nombre total de nodes al TST apuntat per _arrel. */
 void diccionari::llista_paraules(nat k, list<string>& L) const throw(error) {
     llista_paraules_aux(_arrel, k, L, 0, "");
 }
 
-/* Cost temporal: O(p), on p és el nombre de nodes al subarbre arrelat a arrel.
-   Si hi ha poques paraules amb longitud >= k, el cost serà proper a O(m), on m és el nombre de paraules afegides a L. */
+/* Cost temporal: O(n), on n és el nombre de nodes al subarbre arrelat a arrel. */
 void diccionari::llista_paraules_aux(node* arrel, nat k, list<string>& L, nat nivell, string paraula) const throw(error) {
     if (arrel != nullptr) {
         llista_paraules_aux(arrel->_esq, k, L, nivell, paraula);

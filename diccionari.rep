@@ -9,6 +9,7 @@ node* _arrel; /* Apunta al node arrel del TST. És el punt d'entrada i cerca del
 nat _numPal; /* Nombre total de paraules al diccionari. Aquest atribut fa que la funció num_pal() tingui cost constant. */
 
 /**
+ * Justificació de la representació:
  * Hem escollit implementar un Ternary Search Tree (TST) per a la nostra classe diccionari degut
  * a la seva eficiència temporal i espacial.
  * El TST ofereix una cerca ràpida en O(log N), on N és el nombre de nodes, en la majoria dels casos, 
@@ -36,8 +37,17 @@ node* copia(node* arrel) throw(error);
    Post: Allibera la memòria de tots els nodes del subarbre arrelat a arrel. Si arrel és nul, no fa res. */
 void esborra(node* arrel);
 
+/**
+ * Pre: El string p és no buit i és una paraula qualsevol que pot contenir qualsevol caràcter.
+ * Post: Retorna true si i només si tots els caràcters de p són lletres majúscules entre 
+ * 'A' i 'Z' (codi ASCII entre 65 i 90). En cas contrari, retorna false. 
+ */
+bool es_paraula_valida(const string& p);
+
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït. 
-          paraulaNova no és buida i conté la paraula a inserir amb un símbol '#' al final.
+          paraulaNova no és buida, és una paraula vàlida (menys l'ultim símbol, només conté
+          caràcters que poden estar entre A i Z inclosos) i conté el símbol '#' al final.
+          index és un natural i index <= paraulaNova.size()
    Post: Insereix la paraulaNova al subarbre arrelat a arrel si no existia prèviament. 
          Retorna el punter a l'arrel actualitzada del subarbre. */
 node* insereix_aux(node* arrel, const string& paraulaNova, nat index) throw(error);
@@ -51,12 +61,13 @@ void prefix_aux(node* arrel, const string& p, nat index, string& paraula) const 
 
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït. 
           patro és un vector d'strings.
-          pos indica la posició actual en el vector patro.
+          pos indica la posició actual en el vector patro, és un natural i pos <= patro.size()
+          actual és un string temporal per construir paraules
    Post: Afegeix a la llista L totes les paraules del subarbre arrelat a arrel que satisfan el patró especificat per patro. */
 void satisfan_patro_aux(node* arrel, const vector<string>& patro, nat pos, string& actual, list<string>& L) const throw(error);
 
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït.
-          k indica la longitud mínima de les paraules a incloure.
+          k indica la longitud mínima de les paraules a incloure a L.
           nivell indica la profunditat actual en l'arbre, i paraula conté el prefix parcial actual.
    Post: Afegeix a la llista L totes les paraules del subarbre arrelat a arrel amb longitud >= k en ordre alfabètic. */
 void llista_paraules_aux(node* arrel, nat k, list<string>& L, nat nivell, string paraula) const throw(error);
