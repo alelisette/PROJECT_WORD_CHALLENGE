@@ -14,20 +14,23 @@ nat _numPal; /* Nombre total de paraules al diccionari. Aquest atribut fa que la
  * Justificació de la representació:
  * Hem escollit implementar un Ternary Search Tree (TST) per a la nostra classe diccionari degut
  * a la seva eficiència temporal i espacial.
- * El TST ofereix una cerca ràpida en O(log N), on N és el nombre de nodes, en la majoria dels casos, 
- * aprofitant l'ordenació lexicogràfica de les paraules i la cerca per prefixos. Comparat amb els tries, 
+ * El TST ofereix una cerca ràpida, proporcional a la mida de la paraula que es consulta, ja que els BSTs
+ * que es formen són petits i en el pitjor cas (que aquests BSTs siguin desequilibrats) a cada nivell 
+ * s'exploren 27 nodes. De fet, hem implementat una versió que utilitza un altre atribut i unes 
+ * funcions més (rotacions) per inserir de manera equilibrada al TST però després hem comparat el temps 
+ * d'execució i la millora no és significativa i creiem que la complexitat del codi podria conduir a errors
+ * a jocs de prova més grans. El TST tradicional manté la simplicitat en la seva implementació, sense 
+ * necessitat de balanceig com en ja que els BSTs que es formen no són prou grans per voler corregir el 
+ * seu euqilibri. 
+ * Que les consultes siguin proporcionals a la mida de la paraula a cercar
+ * és el que més ens interessa per a les funcions prefix i satisfan_patro.
+ * El TST profita l'ordenació lexicogràfica de les paraules i la cerca per prefixos. Comparat amb els tries, 
  * el TST és més eficient en memòria, ja que no necessita espai addicional per fils buits.
- * A més, el TST manté la simplicitat en la seva implementació, sense necessitat de balanceig com en 
- * els arbres binaris de cerca (BST). Tot i que explorar l'equilibri podria millorar el rendiment en 
- * arbres grans, en aquest cas, els arbres no són prou grans (només gestionem 26 símbols) per 
- * justificar aquesta complexitat addicional. De fet, hem implementat una versió que utilitza un altre 
- * atribut i unes funcions més (rotacions) per inserir de manera equilibrada al TST però després hem 
- * comparat el temps d'execució i la millora no és significativa i creiem que la complexitat del codi 
- * podria conduir a errors a jocs de prova més grans.
- * Tampoc hem escollit una taula de hash, ja que no permet una cerca eficient per prefixos ni patrons, 
- * que és clau per al nostre diccionari. Tampoc hem considerat un AVL, ja que no és tan eficient per a la 
- * cerca de prefixos com el TST. Un monticle no és adequat perquè es fa difícil obtenir paraules 
- * ordenades o cercar per prefixos de manera eficient.
+ * Tampoc hem escollit una taula de hash ja que no permet una cerca eficient per prefixos ni patrons, 
+ * que és clau per al nostre diccionari, i per la complexitat que implica veure com gerstionar les
+ * col·lisions i la redispersió a més del gran cost en memòria. Tampoc hem considerat un AVL, ja que 
+ * no és tan eficient per a la cerca de prefixos com el TST. I un monticle no és adequat perquè es 
+ * fa difícil obtenir paraules ordenades o cercar per prefixos de manera eficient.
  */
 
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït.
