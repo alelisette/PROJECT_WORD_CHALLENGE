@@ -31,6 +31,8 @@ nat _numPal; /* Nombre total de paraules al diccionari. Aquest atribut fa que la
  * col·lisions i la redispersió a més del gran cost en memòria. Tampoc hem considerat un AVL, ja que 
  * no és tan eficient per a la cerca de prefixos com el TST. I un monticle no és adequat perquè es 
  * fa difícil obtenir paraules ordenades o cercar per prefixos de manera eficient.
+ * El TST és un intermedi entre el Trie següent germà i l'AVL ja que no ocupa tanta memòria com el Trie
+ * i és més senzill que l'AVL mantenint l'eficiència temporal.
  */
 
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït.
