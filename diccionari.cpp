@@ -2,8 +2,15 @@
 
 /* Cost temporal: O(1) */
 diccionari::diccionari() throw(error) {
-    _arrel = nullptr;
-    _numPal = 0;
+    _arrel = new node;
+    if (_arrel == nullptr) throw error(0);
+    
+    _arrel->_lletra = '#';
+    _arrel->_cen = nullptr;
+    _arrel->_esq = nullptr;
+    _arrel->_dre = nullptr;
+
+    _numPal = 1;
 }
 
 /* Cost temporal: O(n), on n és el nombre total de nodes del diccionari original. */
@@ -60,20 +67,7 @@ void diccionari::esborra(node* arrel) {
 en el pitjor cas el cost sería O(27*n) ja que el nostre TST gestiona 27 símbols (26 lletres i #)
 però 27 és una constant */
 void diccionari::insereix(const string& p) throw(error) {
-    if (p != "" and es_paraula_valida(p)) _arrel = insereix_aux(_arrel, p+'#', 0);
-}
-
-/* Cost temporal: O(n) on n és la mida de p */
-bool diccionari::es_paraula_valida(const string& p) {
-    bool valida = true;
-    
-    nat i = 0;
-    while (valida and i < p.size()) {
-        if (p[i] < 'A' or 'Z' < p[i]) valida = false;
-        ++i;
-    }
-
-    return valida;
+    if (p != "") _arrel = insereix_aux(_arrel, p+'#', 0);
 }
 
 /* Cost temporal: O(n) on n és la mida de paraulaNova */
@@ -93,7 +87,7 @@ diccionari::node* diccionari::insereix_aux(node* arrel, const string& paraulaNov
     else if (paraulaNova[index] < arrel->_lletra) arrel->_esq = insereix_aux(arrel->_esq, paraulaNova, index);
     else if (arrel->_lletra < paraulaNova[index]) arrel->_dre = insereix_aux(arrel->_dre, paraulaNova, index);
     else if (index < paraulaNova.size()-1) arrel->_cen = insereix_aux(arrel->_cen, paraulaNova, index+1);
-
+    
     return arrel;
 }
 

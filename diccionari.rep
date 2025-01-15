@@ -5,8 +5,10 @@ struct node {
     node* _dre; /* Punter al subarbre dret. Conté nodes amb lletres majors a _lletra segons l'ordre lexicogràfic. */
 };
 
-node* _arrel; /* Apunta al node arrel del TST. És el punt d'entrada i cerca del diccionari. */
-nat _numPal; /* Nombre total de paraules al diccionari. Aquest atribut fa que la funció num_pal() tingui cost constant. */
+node* _arrel; /* Apunta al node arrel del TST. És el punt d'entrada i cerca del diccionari. 
+               S'inicialitza _arrel posant que tingui el símbol '#' ja que el diccionari sempre té la paraula buida.*/
+nat _numPal; /* Nombre total de paraules al diccionari. Aquest atribut fa que la funció num_pal() tingui cost constant.
+               S'inicialitza _numPal a 1 ja que el diccionari sempre té la paraula buida. */
 
 /**
  * Justificació de la representació:
@@ -37,16 +39,8 @@ node* copia(node* arrel) throw(error);
    Post: Allibera la memòria de tots els nodes del subarbre arrelat a arrel. Si arrel és nul, no fa res. */
 void esborra(node* arrel);
 
-/**
- * Pre: El string p és no buit i és una paraula qualsevol que pot contenir qualsevol caràcter.
- * Post: Retorna true si i només si tots els caràcters de p són lletres majúscules entre 
- * 'A' i 'Z' (codi ASCII entre 65 i 90). En cas contrari, retorna false. 
- */
-bool es_paraula_valida(const string& p);
-
 /* Pre:  arrel pot ser un punter nul o bé apuntar a un node d'un TST correctament construït. 
-          paraulaNova no és buida, és una paraula vàlida (menys l'ultim símbol, només conté
-          caràcters que poden estar entre A i Z inclosos) i conté el símbol '#' al final.
+          paraulaNova no és buida i conté el símbol '#' al final.
           index és un natural i index <= paraulaNova.size()
    Post: Insereix la paraulaNova al subarbre arrelat a arrel si no existia prèviament. 
          Retorna el punter a l'arrel actualitzada del subarbre. */

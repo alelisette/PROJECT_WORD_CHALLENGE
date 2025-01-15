@@ -30,7 +30,6 @@ vector<node> _taula;
  */
 int cerca_dicotomica(const string &a) const;
 
-
 /**
  * Justificació de la representació:
  * Hem escollit guardar els anagrames canònics en un vector perquè, tot i que en un principi

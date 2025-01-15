@@ -27,18 +27,16 @@ anagrames::~anagrames() throw() {
 }
 
 /** 
- * Cost temporal: O(h + p.size() + log n + n + m), on:
- *  - 'h' és l'alçada del TST en 'diccionari::insereix'.
- *  - 'p.size()' és la mida de la paraula 'p' per calcular el canònic.
- *  - 'log n' és el cost de la cerca dicotòmica.
- *  - 'n' és la mida de '_taula' en el pitjor cas per la inserció.
- *  - 'm' és la mida de la llista d'anagrames per la inserció en ella.
+ * Cost temporal: O(ps + log ts + max(tas, ts)), on:
+ *  - 'ps' és la mida de p.
+ *  - 'ts' és la mida de '_taula'.
+ *  - 'tas' és la mida de la llista '_anagrames' associada al node amb el canònic 'canonic'.
  */
 void anagrames::insereix(const string& p) throw(error) {
-  diccionari::insereix(p); // Cost: O(p.size())
+  diccionari::insereix(p); 
 
-  string canonic = word_toolkit::anagrama_canonic(p); // Cost: O(p.size())
-  int idx = cerca_dicotomica(canonic); // Cost: O(log(_taula.size()))
+  string canonic = word_toolkit::anagrama_canonic(p); 
+  int idx = cerca_dicotomica(canonic); 
 
   if (idx >= 0) {
     list<string>::iterator it = _taula[idx]._anagrames.begin();
@@ -46,7 +44,7 @@ void anagrames::insereix(const string& p) throw(error) {
 
     while (it != end and *it < p) ++it;
     if (it == end or *it != p) {
-      _taula[idx]._anagrames.insert(it, p); // Cost: O(n), n = mida de _taula[idx]._anagrames
+      _taula[idx]._anagrames.insert(it, p); 
     }
   } else {
     int pos = -(idx + 1);
@@ -55,30 +53,31 @@ void anagrames::insereix(const string& p) throw(error) {
     nou._canonic = canonic;
     nou._anagrames.push_back(p);
 
-    _taula.insert(_taula.begin() + pos, nou); // Cost: O(_taula.size())
+    _taula.insert(_taula.begin() + pos, nou); 
   }
 }
 
 /** 
- * Cost temporal: O(a.size() + log n + m), on:
- *  - 'a.size()' és el cost de verificar si 'a' és canònic.
- *  - 'log n' és el cost de la cerca dicotòmica a '_taula'.
+ * Cost temporal: O(as + ls + log n + m), on:
+ *  - 'as' és la mida de a.
+ *  - 'ls' és la mida que pot tenir L al principi.
+ *  - 'n' és la mida de '_taula'.
  *  - 'm' és la mida de la llista '_anagrames' associada al node amb el canònic 'a'.
  */
 void anagrames::mateix_anagrama_canonic(const string& a, list<string>& L) const throw(error) {
-    if (not word_toolkit::es_canonic(a)) { // Cost: O(a.size())
+    if (not word_toolkit::es_canonic(a)) { 
       throw error(NoEsCanonic);
     }
 
-    L.clear(); // Cost: O(L.size())
+    L.clear();
 
-    int idx = cerca_dicotomica(a); // Cost: O(log(_taula.size()))
+    int idx = cerca_dicotomica(a); 
     if (0 <= idx) {
-        L = _taula[idx]._anagrames; // Cost: O(L.size())
+        L = _taula[idx]._anagrames; 
     }
 }
 
-/* Cost temporal: O(log n), on 'n' és la mida de '_taula', ja que s'utilitza una cerca dicotòmica. */
+/* Cost temporal: O(log n), on 'n' és la mida de '_taula'. */
 int anagrames::cerca_dicotomica(const string &a) const {
   int esq = 0;
   int dre = (int)_taula.size() - 1;

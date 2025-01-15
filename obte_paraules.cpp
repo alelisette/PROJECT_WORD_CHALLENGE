@@ -3,7 +3,7 @@
 #include "word_toolkit.hpp"
 
 /**
- * Pre: s es un string passat per referencia i subs és un conjunt valid o 
+ * Pre: s es un string passat per referencia i subs és un conjunt vàlid o 
  *      sigui tots els indexos es troben entre [1,s.size()].
  * Post: Retorna substring que correspon als caracters de s seleccionats segons els indexos 
  *      en subs. Com que subs i s estan ordenats, el substring també està ordenat alfabèticament.
@@ -16,17 +16,17 @@ static string obte_subset(const string& s, const subset& subs) {
 }
 
 /**
- * Cost: O((C(n, k)) * (k + m + (p + m))), on:
-     * - C(n, k) es el nombre de combinacions de n elements agafats de k en k.
+ * Cost: O( C(n, k) * (k + m + p+m) ), on:
+     * - C(n, k) és el nombre de combinacions de n elements agafats de k en k.
      * - k és la longitud dels subset.
-     * - m és el nombre de paraules obtingudes por A.mateix_anagrama_canonic.
-     * - p és la mida actual de la llista `paraules`.
+     * - m és la mida de la llista temp després de fer A.mateix_anagrama_canonic(subs, temp).
+     * - p és la mida de la llista paraules.
      * 
      * Nota:
      * - Generar subconjunts de longitud k te coste O(C(n, k)) on C fa referencia a la combinatoria.
      * - Obtenir la representacio el substring de sCanonic a partir del subset té cost O(k).
-     * - Com que temp i paraules són llistes ordenades, combinar els seus resultats es fa amb 
-     * merge i això té cost O(p + m);
+     * - Com que temp i paraules són llistes ordenades, combinar els seus resultats es fa amb merge i 
+     * això té cost O(p + m);
   */
 void obte_paraules::obte_paraules(nat k, const string& s, const anagrames& A, list<string>& paraules) throw(error) {
   if (k > s.size() or k < 3) {
@@ -49,7 +49,7 @@ void obte_paraules::obte_paraules(nat k, const string& s, const anagrames& A, li
 }
 
 /**
- * Cost: O(Σ(k=3..s.size()) * [C(n, k) * (k + m + p + m)]), on:
+ * Cost: O( Σ(k=3..s.size()) * [C(n, k)*(k+m+p+m)]), on:
  * [C(n, k) * k + m + p + m] és el cost de obte_paraules(k, s, A, paraulesK):
      * Nota: Aquest cost pot arribar a ser exponencial en funció del valor de n degut 
      * al terme de combinatoria C(n,k).
