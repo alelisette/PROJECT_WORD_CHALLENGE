@@ -1,2 +1,3 @@
 # PROJECTE_ESIN
-Projecte de l'assignatura ESIN 2024/2025
+Este proyecto de programación, desarrollado en el marco de la asignatura ESIN (UPC), tiene como objetivo implementar un sistema que permita resolver problemas relacionados con juegos de palabras similares a Apalabrados, Scrabble o Word Challenge. El enfoque principal está en el manejo eficiente de datos para construir palabras a partir de letras dadas. El proyecto busca no solo resolver un problema específico, sino también fomentar el diseño eficiente, la implementación modular y la capacidad de justificar las decisiones tomadas en términos de rendimiento y estructura de datos.
+Nota: 9.5/10
